@@ -18,4 +18,5 @@ const apps = firebase.apps
 apps.forEach(app => console.log(app.name))
 
 const auth = firebase.app().auth()
+const database = firebase.app().database()
 export {firebase, auth}
