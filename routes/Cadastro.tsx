@@ -1,5 +1,5 @@
 import { Button, StyleSheet, TextInput, View } from 'react-native';
-import { auth } from '@/components/Firebase';
+import { auth, database } from '@/components/Firebase';
 import { useState, useEffect } from 'react'
 import { User } from '@/models/User.interface';
 
@@ -11,14 +11,30 @@ export default function Cadastro({ navigation }) {
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
     if (user?.uid) {
       navigation.navigate('Dashboard', {uid: user?.uid})
+      saveUserOnDatabase()
     }
   })
+
+  async function saveUserOnDatabase() {
+    database.ref(`usuario/${user?.uid}`).set({
+      name: name,
+      cnpj: cnpj,
+      telefone: telefone,
+      email: email,
+      uid: user?.uid
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
 
   async function createUser() {
     auth
@@ -52,11 +68,6 @@ export default function Cadastro({ navigation }) {
       <TextInput
         placeholder='Senha'
         onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-      />
-      <TextInput
-        placeholder='Repita sua Senha'
-        onChangeText={(text) => setRepeatPassword(text)}
         secureTextEntry={true}
       />
       <Button title='Criar Usuário'
