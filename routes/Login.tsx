@@ -3,6 +3,7 @@ import { auth } from '@/components/Firebase';
 import { useState, useEffect } from 'react';
 import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
+import Toast from 'react-native-toast-message';
 import { globalstyles } from '@/app/(tabs)';
 
 export default function Login({ navigation }) {
@@ -22,20 +23,32 @@ export default function Login({ navigation }) {
                 navigation.navigate('Dashboard', { uid: currentUser.uid });
             }
         });
-    
         return () => unsubscribe();
     }, [navigation]);
-    
 
     async function login() {
+        if (!email || !password) {
+            Toast.show({
+                type: 'error',
+                text1: 'Todos os campos devem ser preenchidos',
+            });
+            return;
+        }
+
         auth
             .signInWithEmailAndPassword(email, password)
             .then((response) => {
                 setUser(response.user);
-                console.log(response.user);
             })
             .catch((error) => {
-                console.log(error);
+                let errorMessage = 'Erro ao logar usuário. Tente novamente.';
+
+
+                Toast.show({
+                    type: 'error',
+                    text1: 'Algo deu errado',
+                    text2: errorMessage,
+                });
             });
     }
 
@@ -62,7 +75,7 @@ export default function Login({ navigation }) {
             />
 
             <TouchableOpacity
-                onPress={() => login()}
+                onPress={login}
                 style={globalstyles.largebutton}
             >
                 <Text style={globalstyles.buttontext}>Login</Text>
@@ -76,9 +89,11 @@ export default function Login({ navigation }) {
             >
                 <Text style={globalstyles.buttontext}>Cadastro</Text>
             </TouchableOpacity>
+
+            <Toast />
         </LinearGradient>
     );
-}                
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -99,7 +114,7 @@ const styles = StyleSheet.create({
         height: 100,
         marginTop: 16,
         resizeMode: 'contain'
-    },    
+    },
     input: {
         width: 350,
         height: 60,

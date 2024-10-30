@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
 import { globalstyles } from '@/app/(tabs)';
+import Toast from 'react-native-toast-message';
 
 export default function Cadastro({ navigation }) {
   const [name, setName] = useState('');
@@ -37,32 +38,59 @@ export default function Cadastro({ navigation }) {
   }
 
   async function createUser() {
+    if (!name || !cnpj || !telefone || !email || !password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Todos os campos devem ser preenchidos',
+      });
+      return;
+    }
+
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
         setUser(response.user);
       })
       .catch((error) => {
-        console.log(error);
+        let errorMessage = '';
+        switch (error.code) {
+          case 'auth/invalid-email':
+            errorMessage = 'Email inválido. Verifique o formato.';
+            break;
+          case 'auth/weak-password':
+            errorMessage = 'A senha deve ter no mínimo 6 caracteres.';
+            break;
+          case 'auth/email-already-in-use':
+            errorMessage = 'Este email já está cadastrado.';
+            break;
+          default:
+            errorMessage = 'Erro ao criar usuário. Tente novamente.';
+            break;
+        }
+
+        Toast.show({
+          type: 'error',
+          text1: 'Erro!',
+          text2: errorMessage,
+        });
       });
   }
 
   return (
-    <LinearGradient
-    colors={['#7913EE', '#9249FF']}
-    style={styles.container}
->
-      <ScrollView style={styles.scrollView}>
+    <LinearGradient colors={['#7913EE', '#9249FF']} style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Image
             style={styles.logo}
             source={require('@/assets/images/insightwiselogo.png')} // Ajuste o caminho conforme necessário
           />
-          <Button
-            title="Voltar"
+          <TouchableOpacity
+            style={globalstyles.button}
             onPress={() => navigation.navigate('Login')}
-            color="#650FC8" // Ajuste a cor conforme necessário
-          />
+          >
+            <Text style={globalstyles.buttontext}>Voltar</Text>
+          </TouchableOpacity>
         </View>
         <Text style={styles.title}>Faça seu Cadastro</Text>
         <View style={styles.whiteBlock}>
@@ -103,15 +131,15 @@ export default function Cadastro({ navigation }) {
             onChangeText={(text) => setTelefone(text)}
             keyboardType="phone-pad"
           />
-
         </View>
         <TouchableOpacity
-            onPress={() => createUser()}
-            style={globalstyles.button}
-          >
-            <Text style={globalstyles.buttontext}>Finalizar Cadastro</Text>
-          </TouchableOpacity>
+          onPress={() => createUser()}
+          style={globalstyles.button}
+        >
+          <Text style={globalstyles.buttontext}>Finalizar Cadastro</Text>
+        </TouchableOpacity>
       </ScrollView>
+      <Toast />
     </LinearGradient>
   );
 }
@@ -121,10 +149,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     alignItems:'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: '#650FC8'
   },
   scrollView: {
     flex: 1,
+    marginTop: 40,
   },
   header: {
     flexDirection: 'row',
@@ -144,6 +174,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 40,
     marginLeft: 20,
+    fontWeight:'bold'
   },
   whiteBlock: {
     backgroundColor: 'white',
@@ -163,19 +194,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#650FC8'
   },
   profileSubtitle: {
     marginBottom: 20,
+    color: '#650FC8'
   },
   profileLabel: {
     marginTop: 16,
     fontWeight: 'bold',
+    color: '#650FC8'
   },
   input: {
     height: 40,
-    borderColor: '#650FC8', // Substitua pela cor do bottomline
     borderBottomWidth: 1,
     marginBottom: 20,
-    color: '#650FC8', // Substitua pela cor do texto
+    borderColor: '#650FC8',
+    color: '#650FC8'
   },
 });

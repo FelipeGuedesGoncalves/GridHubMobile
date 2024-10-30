@@ -9,19 +9,20 @@ export default function HomeScreen() {
   const Stack = createStackNavigator()
   
   return (
-    <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-      
-      
-    }}>
+    <Stack.Navigator>
       <Stack.Screen
         name='Login'
         component={Login}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name='Cadastro'
         component={Cadastro}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name='Dashboard'
