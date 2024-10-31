@@ -47,6 +47,7 @@ function MyTabs() {
         name="Dashboard" 
         component={Dashboard}
         options={{
+          tabBarLabel: () => null, // Oculta a label
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/dashboardicon.png')}
@@ -59,6 +60,7 @@ function MyTabs() {
         name="Relatorio" 
         component={Relatorio}
         options={{
+          tabBarLabel: () => null, // Oculta a label
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/papericon.png')}
@@ -71,6 +73,7 @@ function MyTabs() {
         name="Analise individual" 
         component={AnaliseIndividual}
         options={{
+          tabBarLabel: () => null, // Oculta a label
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/analiseindividualicon.png')}
@@ -83,6 +86,7 @@ function MyTabs() {
         name="Tutorial" 
         component={Tutorial}
         options={{
+          tabBarLabel: () => null, // Oculta a label
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/tutorialicon.png')}
@@ -95,6 +99,7 @@ function MyTabs() {
         name="Profile" 
         component={Profile}
         options={{
+          tabBarLabel: () => null, // Oculta a label
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/profileicon.png')}
@@ -110,15 +115,14 @@ function MyTabs() {
 // Estilos
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: '#6200ee', // Cor de fundo similar ao gradient
+    backgroundColor: '#4a00ac', // Cor de fundo similar ao gradient
     elevation: 0, // Remove a sombra
-    borderBottomWidth: 1, // Borda inferior
-    borderBottomColor: '#bbb', // Cor da borda
+    height: 70,
+    justifyContent: 'center'
   },
   tabBarIndicatorStyle: {
     backgroundColor: 'yellow', // Indicador em amarelo
-    height: 4, // Altura do indicador
-    borderRadius: 2, // Borda arredondada do indicador
+    height: 1.5, // Altura do indicador
   },
   tabBarItemStyle: {
     flex: 1, // Ocupa o espaço igual entre as abas
