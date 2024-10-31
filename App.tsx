@@ -117,11 +117,12 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: '#4a00ac', // Cor de fundo similar ao gradient
     elevation: 0, // Remove a sombra
-    height: 70,
-    justifyContent: 'center'
+    height: 87,
+    justifyContent: 'center',
+    paddingTop: 20
   },
   tabBarIndicatorStyle: {
-    backgroundColor: 'yellow', // Indicador em amarelo
+    backgroundColor: '#ffffff', // Indicador em amarelo
     height: 1.5, // Altura do indicador
   },
   tabBarItemStyle: {
