@@ -3,7 +3,7 @@ import { Button, StyleSheet, TextInput, View, ScrollView, Text, TouchableOpacity
 import { auth, database } from '@/components/Firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
-import { globalstyles } from '@/app/(tabs)';
+import { globalstyles } from '@/styles/globalstyles';
 
 export default function Profile({ navigation }) {
     const [userInfo, setUserInfo] = useState({

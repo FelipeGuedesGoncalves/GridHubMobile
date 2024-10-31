@@ -3,7 +3,7 @@ import { auth, database } from '@/components/Firebase';
 import { useState, useEffect } from 'react';
 import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
-import { globalstyles } from '@/app/(tabs)';
+import { globalstyles } from '@/styles/globalstyles';
 import Toast from 'react-native-toast-message';
 import { checkCnpj } from '@/client/client';
 import { CnpjResponse } from '@/models/CnpjResponse.interface';

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
-import { globalstyles } from '@/app/(tabs)';
+import { globalstyles } from '@/styles/globalstyles';
 
 export default function Login({ navigation }) {
     const [email, setEmail] = useState('');
