@@ -13,14 +13,14 @@ export default function Login({ navigation }) {
 
     useEffect(() => {
         if (user?.uid) {
-            navigation.navigate('Dashboard', { uid: user.uid });
+            navigation.navigate('Profile', { uid: user.uid });
         }
     }, [user]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(currentUser => {
             if (currentUser) {
-                navigation.navigate('Dashboard', { uid: currentUser.uid });
+                navigation.navigate('Profile', { uid: currentUser.uid });
             }
         });
         return () => unsubscribe();

@@ -60,9 +60,6 @@ export default function Cadastro({ navigation }) {
             return;
         }
 
-        // Aqui você pode acessar os dados da resposta usando cnpjData
-        console.log(cnpjData.nome); // Exemplo: imprimir o nome da empresa
-
         // Continue com a criação do usuário
         auth
             .createUserWithEmailAndPassword(email, password)
@@ -120,6 +117,7 @@ export default function Cadastro({ navigation }) {
                         onChangeText={(text) => setName(text)}
                     />
                     <Text style={styles.profileLabel}>CNPJ</Text>
+                    <Text style={styles.profileSubtitle}>(Preencher sem formatação - apenas com números)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
