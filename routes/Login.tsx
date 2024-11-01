@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalstyles } from '@/styles/globalstyles';
 
 export default function Login({ navigation }) {
@@ -12,19 +13,34 @@ export default function Login({ navigation }) {
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
-        if (user?.uid) {
-            navigation.navigate('MyTabs', { uid: user.uid });
-        }
-    }, [user]);
-
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(currentUser => {
+        const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
             if (currentUser) {
-                navigation.navigate('MyTabs', { uid: currentUser.uid });
+                await checkUidInStorage(currentUser.uid);
+                setTimeout(() => navigation.navigate('MyTabs', { uid: currentUser.uid }), 1000); // Atraso para o Toast
             }
         });
         return () => unsubscribe();
     }, [navigation]);
+
+    // Função para verificar e registrar o UID no AsyncStorage
+    async function checkUidInStorage(uid) {
+        try {
+            const storedUids = await AsyncStorage.getItem('JaAcessou');
+            const uids = storedUids ? JSON.parse(storedUids) : [];
+
+            if (!uids.includes(uid)) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Bem Vindo(a), considere assistir nosso tutorial',
+                });
+                
+                uids.push(uid);
+                await AsyncStorage.setItem('JaAcessou', JSON.stringify(uids));
+            }
+        } catch (error) {
+            console.error('Erro ao acessar o AsyncStorage:', error);
+        }
+    }
 
     async function login() {
         if (!email || !password) {
@@ -37,17 +53,16 @@ export default function Login({ navigation }) {
 
         auth
             .signInWithEmailAndPassword(email, password)
-            .then((response) => {
+            .then(async (response) => {
                 setUser(response.user);
+                await checkUidInStorage(response.user.uid);
+                setTimeout(() => navigation.navigate('MyTabs', { uid: response.user.uid }), 1000); // Atraso para o Toast
             })
-            .catch((error) => {
-                let errorMessage = 'Erro ao logar usuário. Tente novamente.';
-
-
+            .catch(() => {
                 Toast.show({
                     type: 'error',
                     text1: 'Algo deu errado',
-                    text2: errorMessage,
+                    text2: 'Erro ao logar usuário. Tente novamente.',
                 });
             });
     }

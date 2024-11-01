@@ -10,6 +10,7 @@ import { StyleSheet, Image } from 'react-native';
 import Relatorio from './routes/Relatorio';
 import Tutorial from './routes/Tutorial';
 import AnaliseIndividual from './routes/AnaliseIndividual';
+import Toast from 'react-native-toast-message';
 
 // Criação dos navegadores
 const Stack = createStackNavigator();
@@ -19,17 +20,18 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        {/* Grupo de telas não autenticadas */}
+
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Cadastro" component={Cadastro} />
         </Stack.Group>
 
-        {/* Grupo de telas autenticadas */}
+
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="MyTabs" component={MyTabs} />
         </Stack.Group>
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }
@@ -47,7 +49,7 @@ function MyTabs() {
         name="Dashboard" 
         component={Dashboard}
         options={{
-          tabBarLabel: () => null, // Oculta a label
+          tabBarLabel: () => null,
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/dashboardicon.png')}
@@ -60,7 +62,7 @@ function MyTabs() {
         name="Relatorio" 
         component={Relatorio}
         options={{
-          tabBarLabel: () => null, // Oculta a label
+          tabBarLabel: () => null, 
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/papericon.png')}
@@ -73,7 +75,7 @@ function MyTabs() {
         name="Analise individual" 
         component={AnaliseIndividual}
         options={{
-          tabBarLabel: () => null, // Oculta a label
+          tabBarLabel: () => null, 
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/analiseindividualicon.png')}
@@ -86,7 +88,7 @@ function MyTabs() {
         name="Tutorial" 
         component={Tutorial}
         options={{
-          tabBarLabel: () => null, // Oculta a label
+          tabBarLabel: () => null, 
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/tutorialicon.png')}
@@ -99,7 +101,7 @@ function MyTabs() {
         name="Profile" 
         component={Profile}
         options={{
-          tabBarLabel: () => null, // Oculta a label
+          tabBarLabel: () => null, 
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/profileicon.png')}
