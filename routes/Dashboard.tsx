@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { auth, database } from '@/components/Firebase';
 import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
-import { BarChart, PieChart, ProgressChart } from 'react-native-chart-kit';
-
-const screenWidth = Dimensions.get('window').width;
+import { BarChart, PieChart } from 'react-native-gifted-charts';
+import { appcolors } from '@/styles/appcolors';
 
 export default function Dashboard() {
     const [analysisData, setAnalysisData] = useState(dadosIniciaisAnalise); // Usa a estrutura inicial
@@ -14,7 +13,7 @@ export default function Dashboard() {
             const user = auth.currentUser;
             if (user) {
                 const analysisRef = database.ref(`analises/${user.uid}`);
-                analysisRef.on('value', (snapshot) => {
+                analysisRef.once('value', (snapshot) => {
                     if (snapshot.exists()) {
                         setAnalysisData(snapshot.val());
                     } else {
@@ -26,167 +25,129 @@ export default function Dashboard() {
         fetchAnalysisData();
     }, []);
 
-
-    // Preparando os dados para os gráficos
-    const atividadesConcluidas = parseInt(analysisData.hoje.atividadesConcluidas) || 0;
-
-    const atividadesInacabadas = parseInt(analysisData.hoje.atividadesInacabadas) || 0;
-
-    const colors2 = [
-        '#FF6384', // Cor para a primeira função
-        '#36A2EB', // Cor para a segunda função
-        '#FFCE56', // Cor para a terceira função
-        '#4BC0C0', // Cor para a quarta função
-        '#9966FF', // Cor para a quinta função
+    const barData = [
+        { value: parseInt(analysisData.hoje.atividadesConcluidas || '0'), label: 'Concluídas' },
+        { value: parseInt(analysisData.hoje.atividadesInacabadas || '0'), label: 'Inacabadas' }
+    ];
+    const colors = [
+        appcolors.roxoescuro,
+        appcolors.roxomedio,
+        appcolors.roxo,
+        appcolors.roxoleve,
+        appcolors.roxoclaro,
+        appcolors.lilas,
+        appcolors.branco,
+        appcolors.Preto
     ];
 
-    const funcoesMaisUtilizadasData = Object.entries(analysisData.hoje.funcoesMaisUtilizadas).map(([funcao, valor], index) => ({
-        name: funcao,
-        population: parseInt(valor) || 0,
-        color: colors2[index % colors2.length], // Atribui cor baseado no índice
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-    }));
+    const funcoesMaisUtilizadasData = Object.entries(analysisData.hoje.funcoesMaisUtilizadas)
+        .map(([funcao, valor], index) => ({
+            value: parseInt(valor || '0'),
+            color: colors[index % colors.length],
+            text: parseInt(valor || '0') + '%'
+        }));
 
+    const renderDot = (color) => (
+        <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: color, marginRight: 10 }} />
+    );
 
-    const utilizacaoDeFuncoes = [
+    const renderLegendComponent = () => (
+        <View style={styles.legendContainer}>
+            {Object.entries(analysisData.hoje.funcoesMaisUtilizadas).map(([funcao, valor], index) => (
+                <View key={funcao} style={styles.legendItem}>
+                    {renderDot(colors[index % colors.length])}
+                    <View style={styles.legendTextLine}>
+                        <Text style={styles.legendText}>{funcao}:</Text>
+                        <Text style={styles.legendText}>{valor}%</Text>
+                    </View>
+                </View>
+            ))}
+        </View>
+    );
+
+    const utilizacaoDeFuncoesData = [
         {
-            name: "Utilizadas",
-            population: parseInt(analysisData.hoje.utilizacaoDeFuncoes.funcoesUtilizadas) || 0,
-            color: "#00FF00", // Verde
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
+            value: parseInt(analysisData.hoje.utilizacaoDeFuncoes.funcoesUtilizadas || '0'),
+            color: '#177AD5'
         },
         {
-            name: "Não Utilizadas",
-            population: parseInt(analysisData.hoje.utilizacaoDeFuncoes.funcoesNaoUtilizadas) || 0,
-            color: "#FF0000", // Vermelho
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
+            value: parseInt(analysisData.hoje.utilizacaoDeFuncoes.funcoesNaoUtilizadas || '0'),
+            color: 'lightgray'
         }
     ];
 
-    const tempoInatividade = parseInt(analysisData.hoje.tempoInatividade) || 0;
+    const tempoInatividadeData = [
+        {
+            value: parseInt(analysisData.hoje.tempoInatividade || '0'),
+            color: '#177AD5'
+        },
+        {
+            value: 100 - parseInt(analysisData.hoje.tempoInatividade || '0'),
+            color: 'lightgray'
+        }
+    ];
 
     return (
-
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             {analysisData ? (
                 <View style={styles.container}>
-
                     <Text style={styles.title}>Dashboard</Text>
+                    <Text style={styles.sectionTitle}>Análise de Hoje</Text>
+                    <Text style={styles.sectionTitle}>Atividades</Text>
+                    <BarChart
+                        frontColor="#177AD5"
+                        barWidth={22}
+                        data={barData}
+                    />
 
                     <View style={styles.box}>
-                        <Text style={styles.sectionTitle}>Atividades Concluídas e Inacabadas</Text>
-                        <BarChart
-                            data={{
-                                labels: ["Concluídas", "Inacabadas"],
-                                datasets: [
-                                    {
-                                        data: [atividadesConcluidas, atividadesInacabadas,]
-                                    }
-                                ]
-                            }}
-                            fromZero
-                            yAxisLabel=''
-                            yAxisSuffix=''
-                            width={340}
-                            height={220}
-                            chartConfig={{
-                                backgroundColor: '#fff',
-                                backgroundGradientFrom: '#fff',
-                                backgroundGradientTo: '#fff',
-                                decimalPlaces: 0,
-                                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-                                style: {
-                                    borderRadius: 16,
-                                },
-                            }}
-                            style={{
-                                marginVertical: 8,
-                                borderRadius: 16,
-                            }}
-                        />
-                    </View>
-
-                    <View style={styles.box}>
-                        <Text style={styles.sectionTitle}>Funções Mais Utilizadas</Text>
+                        <Text style={styles.sectionTitle}>Funções Mais Utilizadas Hoje</Text>
                         <PieChart
+                            donut
+                            showText
+                            textColor="black"
+                            innerRadius={80}
+                            radius={150}
+                            textSize={18}
+                            showTextBackground
+                            textBackgroundRadius={25}
                             data={funcoesMaisUtilizadasData}
-                            width={screenWidth}
-                            height={220}
-                            chartConfig={{
-                                backgroundColor: '#fff',
-                                backgroundGradientFrom: '#fff',
-                                backgroundGradientTo: '#fff',
-                                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-                                style: {
-                                    borderRadius: 16,
-                                },
-                            }}
-                            accessor={"population"}
-                            backgroundColor={"transparent"}
-                            paddingLeft={"15"}
-                            center={[10, 50]}
-                            absolute
-                        />
-                    </View>
 
-                    <View style={styles.box}>
-                        <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
-                        <ProgressChart
-                            data={{
-                                labels: ["Inatividade"], // opcional
-                                data: [tempoInatividade / 60] // Normaliza para um valor entre 0 e 1
-                            }}
-                            width={screenWidth}
-                            height={220}
-                            strokeWidth={16}
-                            radius={32}
-                            chartConfig={{
-                                backgroundColor: '#fff',
-                                backgroundGradientFrom: '#fff',
-                                backgroundGradientTo: '#fff',
-                                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-                                style: {
-                                    borderRadius: 16,
-                                },
-                            }}
-                            hideLegend={false}
-                        />
-                    </View>
 
-                    <View style={styles.box}>
-                        <Text style={styles.sectionTitle}>Funções Utilizadas</Text>
-                        <PieChart
-                            data={utilizacaoDeFuncoes}
-                            width={screenWidth}
-                            height={220}
-                            chartConfig={{
-                                backgroundColor: '#fff',
-                                backgroundGradientFrom: '#fff',
-                                backgroundGradientTo: '#fff',
-                                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-                                style: {
-                                    borderRadius: 16,
-                                },
-                            }}
-                            accessor={"population"}
-                            backgroundColor={"transparent"}
-                            paddingLeft={"15"}
-                            center={[10, 50]}
-                            absolute
                         />
+                        {renderLegendComponent()}
                     </View>
 
 
+                    <Text style={styles.sectionTitle}>Utilização de Funções</Text>
+                    <PieChart
+                        donut
+                        innerRadius={80}
+                        data={utilizacaoDeFuncoesData}
+                        centerLabelComponent={() => (
+                            <Text style={{ fontSize: 30 }}>
+                                {utilizacaoDeFuncoesData[0].value}%
+                            </Text>
+                        )}
+                    />
+
+                    <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
+                    <PieChart
+                        donut
+                        innerRadius={80}
+                        data={tempoInatividadeData}
+                        centerLabelComponent={() => (
+                            <Text style={{ fontSize: 30 }}>
+                                {tempoInatividadeData[0].value}%
+                            </Text>
+                        )}
+                    />
                 </View>
             ) : (
                 <Text>Carregando dados de análise...</Text>
-            )
-            }
-        </ScrollView >
+            )}
+        </ScrollView>
 
     );
 }
@@ -194,38 +155,61 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
         padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    box: {
+        backgroundColor: appcolors.branco,
+        elevation: 20,
+        shadowRadius: 100,
+        shadowOffset: { height: 10, width: 20 },
+        shadowOpacity: 20,
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         padding: 16,
         color: '#9249FF',
-        marginBottom: 30,
     },
     scrollView: {
         width: '100%',
     },
     sectionTitle: {
-        fontSize: 17,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginVertical: 20,
+        marginVertical: 8,
     },
-    box: {
-        height: 'auto',
-        width: '90%',
+    chartContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 40,
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 10,
-        padding: 10,
-        backgroundColor: '#fff',
-        marginVertical: 30,
+        paddingVertical: 20,
+    },
+    legendContainer: {
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    legendItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        marginBottom: 10,
+    },
+    legendText: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    legendTextLine: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '90%'
     }
 });
