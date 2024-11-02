@@ -26,27 +26,28 @@ export default function Dashboard() {
         fetchAnalysisData();
     }, []);
 
+
     // Preparando os dados para os gráficos
     const atividadesConcluidas = parseInt(analysisData.hoje.atividadesConcluidas) || 0;
+
     const atividadesInacabadas = parseInt(analysisData.hoje.atividadesInacabadas) || 0;
-    
-    const funcoesMaisUtilizadasColors = [
+
+    const colors2 = [
         '#FF6384', // Cor para a primeira função
         '#36A2EB', // Cor para a segunda função
         '#FFCE56', // Cor para a terceira função
         '#4BC0C0', // Cor para a quarta função
         '#9966FF', // Cor para a quinta função
-        '#FF9F40', // Cor para a sexta função
     ];
-    
+
     const funcoesMaisUtilizadasData = Object.entries(analysisData.hoje.funcoesMaisUtilizadas).map(([funcao, valor], index) => ({
         name: funcao,
         population: parseInt(valor) || 0,
-        color: funcoesMaisUtilizadasColors[index % funcoesMaisUtilizadasColors.length], // Atribui cor baseado no índice
+        color: colors2[index % colors2.length], // Atribui cor baseado no índice
         legendFontColor: "#7F7F7F",
         legendFontSize: 15,
     }));
-    
+
 
     const utilizacaoDeFuncoes = [
         {
@@ -68,26 +69,29 @@ export default function Dashboard() {
     const tempoInatividade = parseInt(analysisData.hoje.tempoInatividade) || 0;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Dashboard</Text>
-            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                {analysisData ? (
-                    <>
 
-                        
+
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+            {analysisData ? (
+                <View style={styles.container}>
+
+                    <Text style={styles.title}>Dashboard</Text>
+
+                    <View style={styles.box}>
                         <Text style={styles.sectionTitle}>Atividades Concluídas e Inacabadas</Text>
                         <BarChart
                             data={{
                                 labels: ["Concluídas", "Inacabadas"],
                                 datasets: [
                                     {
-                                        data: [atividadesConcluidas, atividadesInacabadas]
+                                        data: [atividadesConcluidas, atividadesInacabadas,]
                                     }
                                 ]
                             }}
+                            fromZero
                             yAxisLabel=''
                             yAxisSuffix=''
-                            width={screenWidth}
+                            width={340}
                             height={220}
                             chartConfig={{
                                 backgroundColor: '#fff',
@@ -104,7 +108,9 @@ export default function Dashboard() {
                                 borderRadius: 16,
                             }}
                         />
+                    </View>
 
+                    <View style={styles.box}>
                         <Text style={styles.sectionTitle}>Funções Mais Utilizadas</Text>
                         <PieChart
                             data={funcoesMaisUtilizadasData}
@@ -125,7 +131,9 @@ export default function Dashboard() {
                             center={[10, 50]}
                             absolute
                         />
+                    </View>
 
+                    <View style={styles.box}>
                         <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
                         <ProgressChart
                             data={{
@@ -147,7 +155,9 @@ export default function Dashboard() {
                             }}
                             hideLegend={false}
                         />
+                    </View>
 
+                    <View style={styles.box}>
                         <Text style={styles.sectionTitle}>Funções Utilizadas</Text>
                         <PieChart
                             data={utilizacaoDeFuncoes}
@@ -168,20 +178,23 @@ export default function Dashboard() {
                             center={[10, 50]}
                             absolute
                         />
+                    </View>
 
-                    </>
-                ) : (
-                    <Text>Carregando dados de análise...</Text>
-                )}
-            </ScrollView>
-        </View>
+
+                </View>
+            ) : (
+                <Text>Carregando dados de análise...</Text>
+            )
+            }
+        </ScrollView >
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#ffffff',
         alignItems: 'center',
         padding: 16,
     },
@@ -190,13 +203,29 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 16,
         color: '#9249FF',
+        marginBottom: 30,
     },
     scrollView: {
         width: '100%',
     },
     sectionTitle: {
-        fontSize: 20,
+        fontSize: 17,
         fontWeight: 'bold',
-        marginVertical: 8,
+        marginVertical: 20,
     },
+    box: {
+        height: 'auto',
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 40,
+        shadowColor: '#171717',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+        marginVertical: 30,
+    }
 });
