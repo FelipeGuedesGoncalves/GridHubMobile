@@ -18,26 +18,89 @@ export default function Cadastro({ navigation }) {
 
     useEffect(() => {
         if (user?.uid) {
-            navigation.navigate('Dashboard', { uid: user?.uid });
+            navigation.navigate('MyTabs', { uid: user?.uid });
             saveUserOnDatabase();
         }
     }, [user]);
 
     async function saveUserOnDatabase() {
+        // Salva as informações do usuário
         database.ref(`usuario/${user?.uid}`).set({
             name: name,
             cnpj: cnpj,
             telefone: telefone,
-            email: email,
+            email: email
+        });
+    
+        // Cria a estrutura inicial das análises com valores vazios
+        database.ref(`analises/${user?.uid}`).set({
             uid: user?.uid,
+            hoje: {
+                atividadesConcluidas: 0,
+                atividadesInacabadas: 0,
+                funcoesMaisUtilizadas: {
+                    pagarFuncionarios: 0,
+                    cadastrarFuncionarios: 0,
+                    marcarReuniao: 0,
+                    requisitarProdutoEstoque: 0,
+                    gerenciarEstoque: 0,
+                    analisarDesempenho: 0,
+                    atualizarDadosCliente: 0,
+                    emitirRelatorios: 0
+                },
+                utilizacaoDeFuncoes: {
+                    funcoesUtilizadas: 0,
+                    funcoesNaoUtilizadas: 0
+                },
+                tempoInatividade: 0
+            },
+            estaSemana: {
+                atividadesConcluidas: 0,
+                atividadesInacabadas: 0,
+                funcoesMaisUtilizadas: {
+                    pagarFuncionarios: 0,
+                    cadastrarFuncionarios: 0,
+                    marcarReuniao: 0,
+                    requisitarProdutoEstoque: 0,
+                    gerenciarEstoque: 0,
+                    analisarDesempenho: 0,
+                    atualizarDadosCliente: 0,
+                    emitirRelatorios: 0
+                },
+                utilizacaoDeFuncoes: {
+                    funcoesUtilizadas: 0,
+                    funcoesNaoUtilizadas: 0
+                },
+                tempoInatividade: 0
+            },
+            esteMes: {
+                atividadesConcluidas: 0,
+                atividadesInacabadas: 0,
+                funcoesMaisUtilizadas: {
+                    pagarFuncionarios: 0,
+                    cadastrarFuncionarios: 0,
+                    marcarReuniao: 0,
+                    requisitarProdutoEstoque: 0,
+                    gerenciarEstoque: 0,
+                    analisarDesempenho: 0,
+                    atualizarDadosCliente: 0,
+                    emitirRelatorios: 0
+                },
+                utilizacaoDeFuncoes: {
+                    funcoesUtilizadas: 0,
+                    funcoesNaoUtilizadas: 0
+                },
+                tempoInatividade: 0
+            }
         })
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .then((response) => {
+            console.log('Análises inicializadas com sucesso:', response);
+        })
+        .catch((error) => {
+            console.log('Erro ao inicializar análises:', error);
+        });
     }
+    
 
     async function createUser() {
         if (!name || !cnpj || !telefone || !email || !password) {
@@ -121,9 +184,8 @@ export default function Cadastro({ navigation }) {
                     <TextInput
                         style={styles.input}
                         placeholder="-"
-                        keyboardType="numeric" // Apenas teclado numérico
+                        onChangeText={(text) => setCnpj(text)}
                     />
-
                     <Text style={styles.profileLabel}>Senha</Text>
                     <TextInput
                         style={styles.input}
