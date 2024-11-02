@@ -26,9 +26,35 @@ export default function Dashboard() {
     }, []);
 
     const barData = [
-        { value: parseInt(analysisData.hoje.atividadesConcluidas || '0'), label: 'Concluídas' },
-        { value: parseInt(analysisData.hoje.atividadesInacabadas || '0'), label: 'Inacabadas' }
+        {
+            value: parseInt(analysisData.hoje.atividadesConcluidas || '0'),
+            label: 'Concluídas',
+            frontColor: appcolors.roxo,
+            spacing: 2,
+        },
+        {
+            value: parseInt(analysisData.hoje.atividadesInacabadas || '0'),
+            label: 'Inacabadas',
+            frontColor: appcolors.roxoclaro,
+            spacing: 20,
+        },
     ];
+
+    const renderLegendGraphic1 = () => {
+        return (
+            <View style={{ width:'100%', flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ height: 12, width: 12, borderRadius: 6, backgroundColor: appcolors.roxo, marginRight: 8 }} />
+                    <Text>Concluídas</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ height: 12, width: 12, borderRadius: 6, backgroundColor: appcolors.roxoclaro, marginRight: 8 }} />
+                    <Text>Inacabadas</Text>
+                </View>
+            </View>
+        );
+    };
+
     const colors = [
         appcolors.roxoescuro,
         appcolors.roxomedio,
@@ -51,19 +77,30 @@ export default function Dashboard() {
         <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: color, marginRight: 10 }} />
     );
 
+    const formatFuncao = (funcao) => {
+        // Quebra a string a cada letra maiúscula e coloca espaço
+        const formatted = funcao
+            .replace(/([A-Z])/g, ' $1') // Adiciona espaço antes de letras maiúsculas
+            .trim() // Remove espaços em branco no início e no fim
+            .replace(/^./, (str) => str.toUpperCase()); // Capitaliza a primeira letra
+    
+        return formatted;
+    };
+    
     const renderLegendComponent = () => (
         <View style={styles.legendContainer}>
             {Object.entries(analysisData.hoje.funcoesMaisUtilizadas).map(([funcao, valor], index) => (
                 <View key={funcao} style={styles.legendItem}>
                     {renderDot(colors[index % colors.length])}
                     <View style={styles.legendTextLine}>
-                        <Text style={styles.legendText}>{funcao}:</Text>
+                        <Text style={styles.legendText}>{formatFuncao(funcao)}:</Text>
                         <Text style={styles.legendText}>{valor}%</Text>
                     </View>
                 </View>
             ))}
         </View>
     );
+    
 
     const utilizacaoDeFuncoesData = [
         {
@@ -93,13 +130,26 @@ export default function Dashboard() {
             {analysisData ? (
                 <View style={styles.container}>
                     <Text style={styles.title}>Dashboard</Text>
-                    <Text style={styles.sectionTitle}>Análise de Hoje</Text>
-                    <Text style={styles.sectionTitle}>Atividades</Text>
-                    <BarChart
-                        frontColor="#177AD5"
-                        barWidth={22}
-                        data={barData}
-                    />
+                    <View style={styles.box}>
+                            <Text style={styles.sectionTitle}>Atividades</Text>
+                            {renderLegendGraphic1()}
+                            <BarChart
+                                data={barData}
+                                barWidth={90}
+                                barBorderWidth={10}
+                                barBorderColor={appcolors.branco}
+                                spacing={40}
+                                hideRules
+                                xAxisThickness={0}
+                                yAxisThickness={0}
+                                noOfSections={3}
+                                maxValue={Math.max(
+                                    parseInt(analysisData.hoje.atividadesConcluidas || '0'),
+                                    parseInt(analysisData.hoje.atividadesInacabadas || '0')
+                                )}
+                            />
+                    </View>
+
 
                     <View style={styles.box}>
                         <Text style={styles.sectionTitle}>Funções Mais Utilizadas Hoje</Text>
@@ -119,30 +169,34 @@ export default function Dashboard() {
                         {renderLegendComponent()}
                     </View>
 
+                    <View style={styles.box}>
+                        <Text style={styles.sectionTitle}>Utilização de Funções</Text>
+                        <PieChart
+                            donut
+                            innerRadius={80}
+                            data={utilizacaoDeFuncoesData}
+                            centerLabelComponent={() => (
+                                <Text style={{ fontSize: 30 }}>
+                                    {utilizacaoDeFuncoesData[0].value}%
+                                </Text>
+                            )}
+                        />
+                    </View>
 
-                    <Text style={styles.sectionTitle}>Utilização de Funções</Text>
-                    <PieChart
-                        donut
-                        innerRadius={80}
-                        data={utilizacaoDeFuncoesData}
-                        centerLabelComponent={() => (
-                            <Text style={{ fontSize: 30 }}>
-                                {utilizacaoDeFuncoesData[0].value}%
-                            </Text>
-                        )}
-                    />
+                    <View style={styles.box}>
+                        <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
+                        <PieChart
+                            donut
+                            innerRadius={80}
+                            data={tempoInatividadeData}
+                            centerLabelComponent={() => (
+                                <Text style={{ fontSize: 30 }}>
+                                    {tempoInatividadeData[0].value}%
+                                </Text>
+                            )}
+                        />
+                    </View>
 
-                    <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
-                    <PieChart
-                        donut
-                        innerRadius={80}
-                        data={tempoInatividadeData}
-                        centerLabelComponent={() => (
-                            <Text style={{ fontSize: 30 }}>
-                                {tempoInatividadeData[0].value}%
-                            </Text>
-                        )}
-                    />
                 </View>
             ) : (
                 <Text>Carregando dados de análise...</Text>
@@ -169,6 +223,10 @@ const styles = StyleSheet.create({
         width: '90%',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: 30,
+        paddingTop: 10,
+        marginVertical: 30,
+        borderRadius: 40
     },
     title: {
         fontSize: 24,
@@ -182,7 +240,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginVertical: 8,
+        marginVertical: 30,
     },
     chartContainer: {
         alignItems: 'center',
