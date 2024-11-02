@@ -31,12 +31,12 @@ export default function Cadastro({ navigation }) {
             email: email,
             uid: user?.uid,
         })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     async function createUser() {
@@ -121,8 +121,9 @@ export default function Cadastro({ navigation }) {
                     <TextInput
                         style={styles.input}
                         placeholder="-"
-                        onChangeText={(text) => setCnpj(text)}
+                        keyboardType="numeric" // Apenas teclado numérico
                     />
+
                     <Text style={styles.profileLabel}>Senha</Text>
                     <TextInput
                         style={styles.input}

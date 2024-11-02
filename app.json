@@ -4,7 +4,7 @@
     "slug": "InsightWiseMobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/insightwiseiconround.png",
+    "icon": "./assets/images/insightwiseicon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/insightwiseiconround.png",
+        "foregroundImage": "./assets/images/insightwiseicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.fiap.insightwisemobileandroid"
