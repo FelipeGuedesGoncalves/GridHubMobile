@@ -7,6 +7,7 @@ import { globalstyles } from '@/styles/globalstyles';
 import Toast from 'react-native-toast-message';
 import { checkCnpj } from '@/client/client';
 import { CnpjResponse } from '@/models/CnpjResponse.interface';
+import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
 
 export default function Cadastro({ navigation }) {
     const [name, setName] = useState('');
@@ -32,66 +33,12 @@ export default function Cadastro({ navigation }) {
             email: email
         });
     
+        const analiseInicial = { ...dadosIniciaisAnalise }
         // Cria a estrutura inicial das análises com valores vazios
         database.ref(`analises/${user?.uid}`).set({
             uid: user?.uid,
-            hoje: {
-                atividadesConcluidas: 0,
-                atividadesInacabadas: 0,
-                funcoesMaisUtilizadas: {
-                    pagarFuncionarios: 0,
-                    cadastrarFuncionarios: 0,
-                    marcarReuniao: 0,
-                    requisitarProdutoEstoque: 0,
-                    gerenciarEstoque: 0,
-                    analisarDesempenho: 0,
-                    atualizarDadosCliente: 0,
-                    emitirRelatorios: 0
-                },
-                utilizacaoDeFuncoes: {
-                    funcoesUtilizadas: 0,
-                    funcoesNaoUtilizadas: 0
-                },
-                tempoInatividade: 0
-            },
-            estaSemana: {
-                atividadesConcluidas: 0,
-                atividadesInacabadas: 0,
-                funcoesMaisUtilizadas: {
-                    pagarFuncionarios: 0,
-                    cadastrarFuncionarios: 0,
-                    marcarReuniao: 0,
-                    requisitarProdutoEstoque: 0,
-                    gerenciarEstoque: 0,
-                    analisarDesempenho: 0,
-                    atualizarDadosCliente: 0,
-                    emitirRelatorios: 0
-                },
-                utilizacaoDeFuncoes: {
-                    funcoesUtilizadas: 0,
-                    funcoesNaoUtilizadas: 0
-                },
-                tempoInatividade: 0
-            },
-            esteMes: {
-                atividadesConcluidas: 0,
-                atividadesInacabadas: 0,
-                funcoesMaisUtilizadas: {
-                    pagarFuncionarios: 0,
-                    cadastrarFuncionarios: 0,
-                    marcarReuniao: 0,
-                    requisitarProdutoEstoque: 0,
-                    gerenciarEstoque: 0,
-                    analisarDesempenho: 0,
-                    atualizarDadosCliente: 0,
-                    emitirRelatorios: 0
-                },
-                utilizacaoDeFuncoes: {
-                    funcoesUtilizadas: 0,
-                    funcoesNaoUtilizadas: 0
-                },
-                tempoInatividade: 0
-            }
+            ...analiseInicial
+            
         })
         .then((response) => {
             console.log('Análises inicializadas com sucesso:', response);

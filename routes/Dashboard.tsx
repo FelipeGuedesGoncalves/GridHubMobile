@@ -1,67 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { auth, database } from '@/components/Firebase';
+import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
 
 export default function Dashboard() {
-    const [analysisData, setAnalysisData] = useState({
-        hoje: {
-            atividadesConcluidas: '',
-            atividadesInacabadas: '',
-            funcoesMaisUtilizadas: {
-                pagarFuncionarios: '',
-                cadastrarFuncionarios: '',
-                marcarReuniao: '',
-                requisitarProdutoEstoque: '',
-                gerenciarEstoque: '',
-                analisarDesempenho: '',
-                atualizarDadosCliente: '',
-                emitirRelatorios: '',
-            },
-            utilizacaoDeFuncoes: {
-                funcoesUtilizadas: '',
-                funcoesNaoUtilizadas: '',
-            },
-            tempoInatividade: '',
-        },
-        estaSemana: {
-            atividadesConcluidas: '',
-            atividadesInacabadas: '',
-            funcoesMaisUtilizadas: {
-                pagarFuncionarios: '',
-                cadastrarFuncionarios: '',
-                marcarReuniao: '',
-                requisitarProdutoEstoque: '',
-                gerenciarEstoque: '',
-                analisarDesempenho: '',
-                atualizarDadosCliente: '',
-                emitirRelatorios: '',
-            },
-            utilizacaoDeFuncoes: {
-                funcoesUtilizadas: '',
-                funcoesNaoUtilizadas: '',
-            },
-            tempoInatividade: '',
-        },
-        esteMes: {
-            atividadesConcluidas: '',
-            atividadesInacabadas: '',
-            funcoesMaisUtilizadas: {
-                pagarFuncionarios: '',
-                cadastrarFuncionarios: '',
-                marcarReuniao: '',
-                requisitarProdutoEstoque: '',
-                gerenciarEstoque: '',
-                analisarDesempenho: '',
-                atualizarDadosCliente: '',
-                emitirRelatorios: '',
-            },
-            utilizacaoDeFuncoes: {
-                funcoesUtilizadas: '',
-                funcoesNaoUtilizadas: '',
-            },
-            tempoInatividade: '',
-        }
-    });
+    const [analysisData, setAnalysisData] = useState(dadosIniciaisAnalise); // Usa a estrutura inicial
 
     useEffect(() => {
         const fetchAnalysisData = async () => {
