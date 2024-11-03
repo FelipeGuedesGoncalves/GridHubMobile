@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { auth, database } from '@/components/Firebase';
 import { relatorioInicialAnalise } from '@/models/relatorioInicialAnalise';
 import { appcolors } from '@/styles/appcolors';
+import { oopsMessage } from '@/models/oopsmessage';
 
 export default function Relatorio() {
     const [relatorioData, setRelatorioData] = useState(relatorioInicialAnalise);
@@ -27,9 +28,13 @@ export default function Relatorio() {
     }, []);
 
     const renderRelatorio = () => {
-        const textoRelatorio = relatorioData[selectedPeriod]?.relatorio || 'Relatório não disponível para o período selecionado.';
+        const textoRelatorio = relatorioData[selectedPeriod]?.relatorio || '';
+
+        // Exibir oopsMessage caso o relatório esteja vazio para o período selecionado
         return (
-            <Text style={styles.relatorioText}>{textoRelatorio}</Text>
+            <Text>
+                {textoRelatorio.trim() === '' ? oopsMessage() : textoRelatorio}
+            </Text>
         );
     };
 
@@ -57,14 +62,25 @@ export default function Relatorio() {
                         </TouchableOpacity>
                     ))}
                 </View>
-
-                <View style={styles.box}>
-                    <Text style={styles.sectionTitle}>Relatório de{selectedPeriod === 'hoje' ? ' Hoje' : selectedPeriod === 'estaSemana' ? 'sta Semana' : 'ste Mês'}</Text>
-                    {renderRelatorio()}
+    
+                {relatorioData[selectedPeriod]?.relatorio?.trim() === '' ? (
+                    // Exibe o `oopsMessage` no lugar do `box`
+                    <View style={styles.oopsContainer}>
+                    {typeof oopsMessage === 'function' ? oopsMessage() : oopsMessage}
                 </View>
+                ) : (
+                    // Exibe o `box` com o relatório se houver dados
+                    <View style={styles.box}>
+                        <Text style={styles.sectionTitle}>
+                            Relatório de{selectedPeriod === 'hoje' ? ' Hoje' : selectedPeriod === 'estaSemana' ? 'sta Semana' : 'ste Mês'}
+                        </Text>
+                        {renderRelatorio()}
+                    </View>
+                )}
             </View>
         </ScrollView>
     );
+    
 }
 
 const styles = StyleSheet.create({
@@ -99,15 +115,13 @@ const styles = StyleSheet.create({
     scrollView: {
         width: '100%',
         height: '100%',
+        backgroundColor: '#FFFFFF',
     },
     sectionTitle: {
         fontSize: 17,
         fontWeight: 'bold',
         marginVertical: 30,
     },
-    relatorioText: {
-        fontSize: 13,
-        color: 'black',
-        textAlign: 'justify',
+    oopsContainer: {
     },
 });

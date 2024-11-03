@@ -9,7 +9,6 @@ import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 import Relatorio from './routes/Relatorio';
 import Tutorial from './routes/Tutorial';
-import AnaliseIndividual from './routes/AnaliseIndividual';
 import Toast from 'react-native-toast-message';
 
 // Criação dos navegadores
@@ -66,19 +65,6 @@ function MyTabs() {
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/papericon.png')}
-              style={styles.tabIcon}
-            />
-          ),
-        }} 
-      />
-      <Tab.Screen 
-        name="Analise individual" 
-        component={AnaliseIndividual}
-        options={{
-          tabBarLabel: () => null, 
-          tabBarIcon: () => (
-            <Image
-              source={require('@/assets/images/analiseindividualicon.png')}
               style={styles.tabIcon}
             />
           ),
