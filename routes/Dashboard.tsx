@@ -155,17 +155,14 @@ export default function Dashboard() {
                         <BarChart
                             data={barData}
                             barWidth={90}
-                            barBorderWidth={10}
-                            barBorderColor={appcolors.branco}
-                            spacing={40}
+                            spacing={20}
                             hideRules
                             xAxisThickness={0}
                             yAxisThickness={0}
-                            noOfSections={3}
-                            maxValue={Math.max(
-                                parseInt(analysisData[selectedPeriod].atividadesConcluidas || '0'),
-                                parseInt(analysisData[selectedPeriod].atividadesInacabadas || '0')
-                            )}
+                            yAxisLabelWidth={40}
+                            noOfSections={4}
+                            maxValue={3000}
+                            isAnimated
                         />
                     </View>
 
@@ -260,55 +257,73 @@ export default function Dashboard() {
                     </View>
                 </View>
             ) : (
-                <Text style={styles.loadingText}>Carregando dados...</Text>
+                <Text>Carregando dados...</Text>
             )}
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        flex: 1,
-        backgroundColor: appcolors.branco,
-    },
     container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
         padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    box: {
+        backgroundColor: appcolors.branco,
+        elevation: 20,
+        shadowRadius: 100,
+        shadowOffset: { height: 10, width: 20 },
+        shadowOpacity: 20,
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 30,
+        paddingTop: 10,
+        marginVertical: 30,
+        borderRadius: 40
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
+        padding: 16,
+        color: '#9249FF',
+    },
+    scrollView: {
+        width: '100%',
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
-        marginBottom: 8,
+        marginVertical: 30,
     },
-    box: {
-        backgroundColor: appcolors.roxoleve,
-        borderRadius: 10,
-        padding: 16,
-        marginBottom: 16,
+    chartContainer: {
+        alignItems: 'center',
+        paddingVertical: 20,
     },
     legendContainer: {
         flexDirection: 'column',
-        marginTop: 8,
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 20,
     },
     legendItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 4,
-    },
-    legendTextLine: {
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     legendText: {
+        color: 'black',
         fontSize: 14,
-        marginLeft: 4,
+        fontWeight: 'bold',
     },
-    loadingText: {
-        textAlign: 'center',
-        marginTop: 20,
-    },
+    legendTextLine: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginVertical: 8
+    }
 });
