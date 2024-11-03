@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     legendText: {
         color: 'black',
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 500
     },
     legendTextLine: {
         justifyContent: 'space-between',
