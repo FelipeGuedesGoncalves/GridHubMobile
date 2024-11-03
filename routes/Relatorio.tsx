@@ -65,7 +65,7 @@ export default function Relatorio() {
     
                 {relatorioData[selectedPeriod]?.relatorio?.trim() === '' ? (
                     // Exibe o `oopsMessage` no lugar do `box`
-                    <View style={styles.oopsContainer}>
+                    <View>
                     {typeof oopsMessage === 'function' ? oopsMessage() : oopsMessage}
                 </View>
                 ) : (
@@ -121,7 +121,5 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         marginVertical: 30,
-    },
-    oopsContainer: {
-    },
+    }
 });
