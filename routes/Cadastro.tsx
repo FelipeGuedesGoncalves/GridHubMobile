@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { checkCnpj } from '@/client/client';
 import { CnpjResponse } from '@/models/CnpjResponse.interface';
 import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
+import { relatorioInicialAnalise } from '@/models/relatorioInicialAnalise';
 
 export default function Cadastro({ navigation }) {
     const [name, setName] = useState('');
@@ -33,6 +34,20 @@ export default function Cadastro({ navigation }) {
             email: email
         });
     
+        const relatorioInicial = { ...relatorioInicialAnalise }
+        // Cria a estrutura inicial das análises com valores vazios
+        database.ref(`relatorios/${user?.uid}`).set({
+            uid: user?.uid,
+            ...relatorioInicial
+            
+        })
+        .then((response) => {
+            console.log('Relatórios inicializados com sucesso:', response);
+        })
+        .catch((error) => {
+            console.log('Erro ao inicializar relatórios:', error);
+        });
+
         const analiseInicial = { ...dadosIniciaisAnalise }
         // Cria a estrutura inicial das análises com valores vazios
         database.ref(`analises/${user?.uid}`).set({
