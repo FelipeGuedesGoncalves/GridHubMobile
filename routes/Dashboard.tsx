@@ -13,7 +13,7 @@ export default function Dashboard() {
             const user = auth.currentUser;
             if (user) {
                 const analysisRef = database.ref(`analises/${user.uid}`);
-                analysisRef.once('value', (snapshot) => {
+                analysisRef.on('value', (snapshot) => {
                     if (snapshot.exists()) {
                         setAnalysisData(snapshot.val());
                     } else {
@@ -67,12 +67,28 @@ export default function Dashboard() {
         appcolors.Preto
     ];
 
-    const funcoesMaisUtilizadasData = Object.entries(analysisData.hoje.funcoesMaisUtilizadas)
-        .map(([funcao, valor], index) => ({
-            value: parseInt(valor || '0'),
-            color: colors[index % colors.length],
-            text: parseInt(valor || '0') + '%'
-        }));
+    // Obter as 5 funções mais utilizadas e calcular a soma das demais
+    const funcoesMaisUtilizadasArray = Object.entries(analysisData.hoje.funcoesMaisUtilizadas)
+        .sort(([, valorA], [, valorB]) => parseInt(valorB || '0') - parseInt(valorA || '0')) // Ordena em ordem decrescente
+        .slice(0, 5); // Seleciona as 5 mais utilizadas
+
+    const funcoesMaisUtilizadasData = funcoesMaisUtilizadasArray.map(([funcao, valor], index) => ({
+        value: parseInt(valor || '0'),
+        color: colors[index % colors.length],
+        text: parseInt(valor || '0') + '%'
+    }));
+
+    // Soma os valores das funções restantes
+    const somaOutrasFuncoes = Object.values(analysisData.hoje.funcoesMaisUtilizadas)
+        .reduce((acc, valor) => acc + parseInt(valor || '0'), 0) - funcoesMaisUtilizadasData.reduce((acc, { value }) => acc + value, 0);
+
+    if (somaOutrasFuncoes > 0) {
+        funcoesMaisUtilizadasData.push({
+            value: somaOutrasFuncoes,
+            color: 'lightgray',
+            text: somaOutrasFuncoes + '%',
+        });
+    }
 
     const renderDot = (color) => (
         <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: color, marginRight: 10 }} />
@@ -153,12 +169,10 @@ export default function Dashboard() {
                             showTextBackground
                             textBackgroundRadius={25}
                             data={funcoesMaisUtilizadasData}
-
-
                         />
 
                         <View style={styles.legendContainer}>
-                            {Object.entries(analysisData.hoje.funcoesMaisUtilizadas).map(([funcao, valor], index) => (
+                            {funcoesMaisUtilizadasArray.map(([funcao, valor], index) => (
                                 <View key={funcao} style={styles.legendItem}>
                                     {renderDot(colors[index % colors.length])}
                                     <View style={styles.legendTextLine}>
@@ -167,6 +181,15 @@ export default function Dashboard() {
                                     </View>
                                 </View>
                             ))}
+                            {somaOutrasFuncoes > 0 && (
+                                <View style={styles.legendItem}>
+                                    {renderDot('lightgray')}
+                                    <View style={styles.legendTextLine}>
+                                        <Text style={styles.legendText}>Outras:</Text>
+                                        <Text style={styles.legendText}>{somaOutrasFuncoes}%</Text>
+                                    </View>
+                                </View>
+                            )}
                         </View>
                     </View>
 
@@ -210,12 +233,12 @@ export default function Dashboard() {
                             innerRadius={80}
                             data={tempoInatividadeData}
                             centerLabelComponent={() => (
-                                <Text style={{fontSize: 40, fontWeight: 'bold'}}>
+                                <Text style={{ fontSize: 40, fontWeight: 'bold' }}>
                                     {tempoInatividadeData[0].value}%
                                 </Text>
                             )}
                         />
-                        <Text style={[styles.legendText,{marginTop: 10}]}>Em relação ao tempo logado</Text>
+                        <Text style={[styles.legendText, { marginTop: 10 }]}>Em relação ao tempo logado</Text>
                     </View>
 
                 </View>
