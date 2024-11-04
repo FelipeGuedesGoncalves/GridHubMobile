@@ -7,7 +7,7 @@ export async function checkCnpj(cnpj: string): Promise<CnpjResponse | null> {
         const response = await axios.get<CnpjResponse>(`https://open.cnpja.com/office/${cnpj}`);
         return response.data;
     } catch (error) {
-        console.error("Erro ao verificar CNPJ:", error);
+        console.log("Erro ao verificar CNPJ:", error);
         return null;
     }
 }

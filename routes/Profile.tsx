@@ -4,6 +4,8 @@ import { auth, database } from '@/components/Firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
 import { globalstyles } from '@/styles/globalstyles';
+import { CnpjResponse } from '@/models/CnpjResponse.interface';
+import { checkCnpj } from '@/client/client';
 
 export default function Profile({ navigation }) {
     const [userInfo, setUserInfo] = useState({
@@ -19,7 +21,7 @@ export default function Profile({ navigation }) {
             const user = auth.currentUser;
             if (user) {
                 const userRef = database.ref(`usuario/${user.uid}`);
-                userRef.once('value', (snapshot) => {
+                userRef.on('value', (snapshot) => {
                     if (snapshot.exists()) {
                         setUserInfo(snapshot.val());
                     } else {
@@ -63,7 +65,24 @@ export default function Profile({ navigation }) {
                 text1: 'Alterações salvas com sucesso!',
             });
         }
+
+
     };
+
+    const handleCnpjVerification = async () => {
+        const cnpjData: CnpjResponse | null = await checkCnpj(userInfo.cnpj);
+        if (!cnpjData) {
+            Toast.show({
+                type: 'error',
+                text1: 'Erro',
+                text2: 'CNPJ não encontrado. Verifique e tente novamente.',
+            });
+            setIsEditing(false);
+            return;
+        } else {
+            handleSaveChanges();
+        }
+    }
 
     const handleCancelEdit = () => {
         setIsEditing(false);
@@ -126,7 +145,7 @@ export default function Profile({ navigation }) {
 
                 {isEditing ? (
                     <>
-                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleSaveChanges}>
+                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleCnpjVerification}>
                             <Text style={styles.buttonText}>Salvar alterações</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={globalstyles.largebutton} onPress={handleCancelEdit}>
