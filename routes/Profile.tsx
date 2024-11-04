@@ -5,6 +5,39 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
 import { globalstyles } from '@/styles/globalstyles';
 
+const validateCNPJ = (cnpj) => {
+    // Remove caracteres não numéricos
+    const cleanedCNPJ = cnpj.replace(/[^\d]+/g, '');
+
+    if (cleanedCNPJ.length !== 14) return false;
+
+    let total = 0;
+    let factor = 5;
+
+    // Primeiro dígito verificador
+    for (let i = 0; i < 12; i++) {
+        total += cleanedCNPJ[i] * factor;
+        factor = factor === 2 ? 9 : factor - 1;
+    }
+
+    let remainder = total % 11;
+    const firstDigit = remainder < 2 ? 0 : 11 - remainder;
+
+    // Segundo dígito verificador
+    total = 0;
+    factor = 6;
+
+    for (let i = 0; i < 13; i++) {
+        total += cleanedCNPJ[i] * factor;
+        factor = factor === 2 ? 9 : factor - 1;
+    }
+
+    remainder = total % 11;
+    const secondDigit = remainder < 2 ? 0 : 11 - remainder;
+
+    return cleanedCNPJ.endsWith(firstDigit.toString() + secondDigit.toString());
+};
+
 export default function Profile({ navigation }) {
     const [userInfo, setUserInfo] = useState({
         name: '',
@@ -13,6 +46,7 @@ export default function Profile({ navigation }) {
         email: ''
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [isCNPJValid, setIsCNPJValid] = useState(true); // Novo estado para controle de CNPJ
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -77,6 +111,11 @@ export default function Profile({ navigation }) {
         );
     };
 
+    const handleCNPJChange = (text) => {
+        setUserInfo({ ...userInfo, cnpj: text });
+        setIsCNPJValid(validateCNPJ(text)); // Atualiza a validade do CNPJ
+    };
+
     return (
         <LinearGradient colors={['#7913EE', '#9249FF']} style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -99,16 +138,17 @@ export default function Profile({ navigation }) {
                         style={styles.input}
                         value={userInfo.cnpj}
                         editable={isEditing}
-                        onChangeText={(text) => setUserInfo({ ...userInfo, cnpj: text })}
+                        onChangeText={handleCNPJChange} // Usa a nova função de manipulação
                         placeholder="-"
                     />
+                    {!isCNPJValid && <Text style={styles.errorText}>CNPJ inválido</Text>}
 
                     <Text style={styles.profileLabel}>Email</Text>
-                    <TouchableOpacity onPress={handleEmailPress} >
+                    <TouchableOpacity onPress={handleEmailPress}>
                         <TextInput
                             style={styles.input}
                             value={userInfo.email}
-                            editable={false} // Always disabled
+                            editable={false} // Sempre desabilitado
                             placeholder="-"
                         />
                     </TouchableOpacity>
@@ -126,7 +166,11 @@ export default function Profile({ navigation }) {
 
                 {isEditing ? (
                     <>
-                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleSaveChanges}>
+                        <TouchableOpacity 
+                            style={globalstyles.largebutton} 
+                            onPress={handleSaveChanges} 
+                            disabled={!isCNPJValid} // Desabilita o botão se o CNPJ for inválido
+                        >
                             <Text style={styles.buttonText}>Salvar alterações</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={globalstyles.largebutton} onPress={handleCancelEdit}>
@@ -189,16 +233,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#650FC8',
     },
-    emailTouchable: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#7913EE',
-        marginBottom: 20,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        height: 500
+    errorText: {
+        color: 'red',
+        marginBottom: 10,
     },
     buttonText: {
         color: '#FFFFFF',
