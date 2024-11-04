@@ -161,7 +161,7 @@ export default function Dashboard() {
                             yAxisThickness={0}
                             yAxisLabelWidth={40}
                             noOfSections={4}
-                            maxValue={3000}
+                            maxValue={2000}
                             isAnimated
                         />
                     </View>
@@ -233,6 +233,7 @@ export default function Dashboard() {
                         <Text style={styles.sectionTitle}>Tempo de Inatividade</Text>
                         <PieChart
                             donut
+                            semiCircle
                             radius={120}
                             sectionAutoFocus
                             innerRadius={80}
