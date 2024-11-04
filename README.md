@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+![Imagem de Capa](assets/images/insightwiselogo.png)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
+## Sumário
+- [Integrantes](#integrantes)
+- [Descrição do Projeto](#descrição-do-projeto)
+- [Como funciona](#como-funciona)
+- [Funcionalidades](#funcionalidades)
+- [Comandos para executar o projeto](#comandos-para-executar-o-projeto)
 
-## Get started
+---
 
-1. Install dependencies
+# InsightWise - Análise de Produtividade para Aplicações Corporativas
 
-   ```bash
-   npm install
-   ```
+## Integrantes:
+#### Breno Lemes Santiago RM: 552270
+#### Felipe Guedes Gonçalves RM: 550906
+#### Luiz Fellipe Soares de Sousa Lucena RM: 551365
+#### Nina Rebello Francisco RM: 99509
+#### Vitória Maria de Camargo RM: 552344
 
-2. Start the app
+## Descrição do Projeto
+O **InsightWise** é uma ferramenta de análise de produtividade desenvolvida para monitorar o uso dos softwares corporativos da Plusoft, proporcionando insights detalhados sobre a eficiência e o engajamento dos funcionários com as funcionalidades disponíveis. A solução visa otimizar o desempenho das equipes, gerando relatórios baseados em interações reais, como cliques, rolagens e períodos de inatividade.
 
-   ```bash
-    npx expo start
-   ```
+A aplicação oferece uma visão clara sobre como os funcionários estão aproveitando as ferramentas disponibilizadas, ajudando empresas a melhorar seus processos internos e utilizar ao máximo os recursos adquiridos.
 
-In the output, you'll find options to open the app in a
+## Como funciona
+A versão mobile do InsightWise funciona como um BaaS (Backend-as-a-Service), utilizando o Firebase Realtime Database como banco de dados. Todos os processos de gerenciamento de usuários — como login, cadastro, edição e exclusão — são realizados com o Firebase Authentication, garantindo uma experiência segura e integrada.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Para aprimorar a experiência dos usuários, a aplicação usa o Async Storage para identificar quem já acessou o app. Caso seja a primeira vez que o usuário esteja acessando o aplicativo no dispositivo, uma mensagem é exibida, sugerindo que ele assista a um tutorial de uso. Esse tutorial é apresentado por meio de um vídeo hospedado no YouTube, integrado ao aplicativo com o React Native YouTube Iframe.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+A navegação do aplicativo é organizada com o uso de rotas, configuradas no arquivo App.tsx. A aplicação utiliza a biblioteca Material Top Tab Navigator em conjunto com o Stack Navigator para gerenciar as rotas, oferecendo uma barra de navegação com ícones que permitem fácil acesso às principais seções: Dashboard, Relatório, Tutorial e Perfil.
 
-## Get a fresh project
+Dentro do InsightWise, o usuário pode visualizar dados por meio de dois formatos: o Dashboard e o Relatório. O Dashboard exibe gráficos diversos que facilitam a análise visual, enquanto o Relatório fornece uma visão detalhada e textual das informações. Ambos os módulos oferecem filtros de período para selecionar "Hoje," "Esta Semana" ou "Este Mês," permitindo ao usuário um acompanhamento flexível e adaptável às suas necessidades.
 
-When you're ready, run:
+A aplicação é desenvolvida com Expo, uma plataforma que facilita a construção e execução do aplicativo com o React Native.
+
+## Funcionalidades
+- **Monitoramento de processos**: Análise de interações dos usuários em tempo real
+- **Integração com API**: Reconhecimento e validação de CNPJ
+- **Cadastro de Empresas (usuários)**: Registro de usuários na plataforma InsightWise. Idealmente, o usuário será um gestor, de uma equipe que trabalha com sistemas ERP em uma empresa.
+- **Login e Autenticação**: Acesso seguro através de e-mail e senha.
+- **Dashboard Geral da Equipe**: Visão geral da performance da equipe, funções mais utilizadas, tempo de inatividade, e insights sobre atividades e comportamento.
+- **Relatórios textuais da Equipe**: Texto detalhado com análises do time, destacando pontos críticos e recomendações para melhorias.
+- **Guia de Como Usar**: Vídeo tutorial com um passo a passo das principais funcionalidades da plataforma.
+
+
+## Comandos para executar o projeto
+
+- Baixe as dependências utilizando o comando abaixo:
+
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Para executar o projeto com expo execute o comando abaixo:
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npx expo run:android
+```
