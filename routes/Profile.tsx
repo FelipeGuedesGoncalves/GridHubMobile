@@ -17,21 +17,23 @@ export default function Profile({ navigation }) {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const user = auth.currentUser;
-            if (user) {
-                const userRef = database.ref(`usuario/${user.uid}`);
-                userRef.on('value', (snapshot) => {
-                    if (snapshot.exists()) {
-                        setUserInfo(snapshot.val());
-                    } else {
-                        console.log('No user data available');
-                    }
-                });
-            }
-        };
+
         fetchUserData();
     }, []);
+
+    const fetchUserData = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            const userRef = database.ref(`usuario/${user.uid}`);
+            userRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    setUserInfo(snapshot.val());
+                } else {
+                    console.log('No user data available');
+                }
+            });
+        }
+    };
 
     const handleLogout = async () => {
         try {
@@ -77,6 +79,7 @@ export default function Profile({ navigation }) {
                 text1: 'Erro',
                 text2: 'CNPJ não encontrado. Verifique e tente novamente.',
             });
+            fetchUserData();
             setIsEditing(false);
             return;
         } else {
