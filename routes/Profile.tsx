@@ -17,7 +17,6 @@ export default function Profile({ navigation }) {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-
         fetchUserData();
     }, []);
 
@@ -52,6 +51,45 @@ export default function Profile({ navigation }) {
         }
     };
 
+    const handleDeleteUser = async () => {
+        Alert.alert(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir sua conta? Essa ação é irreversível.",
+            [
+                { text: "Cancelar", style: "cancel" },
+                { 
+                    text: "Excluir", 
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            const user = auth.currentUser;
+                            if (user) {
+                                // Remove os dados do usuário no Realtime Database
+                                await database.ref(`usuario/${user.uid}`).remove();
+                                
+                                // Remove o usuário do Firebase Auth
+                                await user.delete();
+
+                                Toast.show({
+                                    type: 'success',
+                                    text1: 'Conta excluída com sucesso!',
+                                });
+                                navigation.navigate('Login');
+                            }
+                        } catch (error) {
+                            Toast.show({
+                                type: 'error',
+                                text1: 'Erro',
+                                text2: 'Não foi possível excluir a conta. Tente novamente.',
+                            });
+                            console.log("Erro ao excluir usuário:", error);
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
     const handleEditProfile = () => {
         setIsEditing(true);
     };
@@ -67,8 +105,6 @@ export default function Profile({ navigation }) {
                 text1: 'Alterações salvas com sucesso!',
             });
         }
-
-
     };
 
     const handleCnpjVerification = async () => {
@@ -164,6 +200,11 @@ export default function Profile({ navigation }) {
                 <TouchableOpacity style={globalstyles.largebutton} onPress={handleLogout}>
                     <Text style={styles.buttonText}>Deslogar</Text>
                 </TouchableOpacity>
+
+                {/* Botão para excluir usuário */}
+                <TouchableOpacity style={globalstyles.deleteButton} onPress={handleDeleteUser}>
+                    <Text style={styles.buttonText}>Excluir Conta</Text>
+                </TouchableOpacity>
             </ScrollView>
             <Toast />
         </LinearGradient>
@@ -215,12 +256,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#7913EE',
         marginBottom: 20,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        height: 500
     },
     buttonText: {
         color: '#FFFFFF',
