@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, TextInput, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, TextInput, View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native';
 import { auth, database } from '@/components/Firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
@@ -12,6 +12,7 @@ export default function Profile({ navigation }) {
         telefone: '',
         email: ''
     });
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -47,6 +48,35 @@ export default function Profile({ navigation }) {
         }
     };
 
+    const handleEditProfile = () => {
+        setIsEditing(true);
+    };
+
+    const handleSaveChanges = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            const userRef = database.ref(`usuario/${user.uid}`);
+            await userRef.set(userInfo);
+            setIsEditing(false);
+            Toast.show({
+                type: 'success',
+                text1: 'Alterações salvas com sucesso!',
+            });
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+    };
+
+    const handleEmailPress = () => {
+        Alert.alert(
+            "Atenção",
+            "Por motivos de segurança, seu e-mail só pode ser alterado pela equipe InsightWise, caso deseje prosseguir, contate-nos via email - insightwisesuporte@gmail.com",
+            [{ text: "OK" }]
+        );
+    };
+
     return (
         <LinearGradient colors={['#7913EE', '#9249FF']} style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -59,7 +89,8 @@ export default function Profile({ navigation }) {
                     <TextInput
                         style={styles.input}
                         value={userInfo.name}
-                        editable={false}
+                        editable={isEditing}
+                        onChangeText={(text) => setUserInfo({ ...userInfo, name: text })}
                         placeholder="-"
                     />
 
@@ -67,33 +98,48 @@ export default function Profile({ navigation }) {
                     <TextInput
                         style={styles.input}
                         value={userInfo.cnpj}
-                        editable={false}
+                        editable={isEditing}
+                        onChangeText={(text) => setUserInfo({ ...userInfo, cnpj: text })}
                         placeholder="-"
                     />
 
                     <Text style={styles.profileLabel}>Email</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={userInfo.email}
-                        editable={false}
-                        placeholder="-"
-                        keyboardType="email-address"
-                    />
+                    <TouchableOpacity onPress={handleEmailPress} >
+                        <TextInput
+                            style={styles.input}
+                            value={userInfo.email}
+                            editable={false} // Always disabled
+                            placeholder="-"
+                        />
+                    </TouchableOpacity>
 
                     <Text style={styles.profileLabel}>Telefone</Text>
                     <TextInput
                         style={styles.input}
                         value={userInfo.telefone}
-                        editable={false}
+                        editable={isEditing}
+                        onChangeText={(text) => setUserInfo({ ...userInfo, telefone: text })}
                         placeholder="-"
                         keyboardType="phone-pad"
                     />
                 </View>
 
-                <TouchableOpacity
-                    style={globalstyles.largebutton}
-                    onPress={handleLogout}
-                >
+                {isEditing ? (
+                    <>
+                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleSaveChanges}>
+                            <Text style={styles.buttonText}>Salvar alterações</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleCancelEdit}>
+                            <Text style={styles.buttonText}>Cancelar edição</Text>
+                        </TouchableOpacity>
+                    </>
+                ) : (
+                    <TouchableOpacity style={globalstyles.largebutton} onPress={handleEditProfile}>
+                        <Text style={styles.buttonText}>Editar perfil</Text>
+                    </TouchableOpacity>
+                )}
+
+                <TouchableOpacity style={globalstyles.largebutton} onPress={handleLogout}>
                     <Text style={styles.buttonText}>Deslogar</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -143,12 +189,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#650FC8',
     },
-    button: {
-        backgroundColor: '#7913EE',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 20,
+    emailTouchable: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#7913EE',
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        height: 500
     },
     buttonText: {
         color: '#FFFFFF',
