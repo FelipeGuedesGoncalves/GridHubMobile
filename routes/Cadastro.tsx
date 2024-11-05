@@ -23,7 +23,7 @@ export default function Cadastro({ navigation }) {
             navigation.navigate('Login', { uid: user?.uid });
             saveUserOnDatabase();
         }
-    }, [user]);
+    }, [user]); 
 
     async function saveUserOnDatabase() {
         // Salva as informações do usuário
