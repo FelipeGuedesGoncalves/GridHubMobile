@@ -47,6 +47,8 @@ A aplicação é desenvolvida com Expo, uma plataforma que facilita a construç�
 
 ## Comandos para executar o projeto
 
+- Faça o clone do projeto em sua IDE de preferência
+
 - Baixe as dependências utilizando o comando abaixo:
 
 
