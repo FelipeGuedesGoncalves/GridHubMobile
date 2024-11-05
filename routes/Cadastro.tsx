@@ -20,7 +20,7 @@ export default function Cadastro({ navigation }) {
 
     useEffect(() => {
         if (user?.uid) {
-            navigation.navigate('MyTabs', { uid: user?.uid });
+            navigation.navigate('Login', { uid: user?.uid });
             saveUserOnDatabase();
         }
     }, [user]);
