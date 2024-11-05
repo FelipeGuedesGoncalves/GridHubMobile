@@ -8,7 +8,7 @@ import { DashboardData } from '@/models/DashboardData.interface';
 
 export default function Dashboard() {
     const [analysisData, setAnalysisData] = useState<DashboardData>(dadosIniciaisAnalise);
-    const [selectedPeriod, setSelectedPeriod] = useState<'hoje' | 'estaSemana' | 'esteMes'>('hoje'); // Estado para controlar o período selecionado
+    const [selectedPeriod, setSelectedPeriod] = useState<'hoje' | 'estaSemana' | 'esteMes'>('hoje');
 
     useEffect(() => {
         const fetchAnalysisData = async () => {

@@ -30,7 +30,6 @@ export default function Relatorio() {
     const renderRelatorio = () => {
         const textoRelatorio = relatorioData[selectedPeriod]?.relatorio || '';
 
-        // Exibir oopsMessage caso o relatório esteja vazio para o período selecionado
         return (
             <Text>
                 {textoRelatorio.trim() === '' ? oopsMessage() : textoRelatorio}
@@ -43,7 +42,6 @@ export default function Relatorio() {
             <View style={styles.container}>
                 <Text style={styles.title}>Relatório</Text>
                 
-                {/* Botões para selecionar o período */}
                 <View style={{ flexDirection: 'row', marginVertical: 16 }}>
                     {['hoje', 'estaSemana', 'esteMes'].map((period) => (
                         <TouchableOpacity
@@ -64,12 +62,10 @@ export default function Relatorio() {
                 </View>
     
                 {relatorioData[selectedPeriod]?.relatorio?.trim() === '' ? (
-                    // Exibe o `oopsMessage` no lugar do `box`
                     <View>
                     {typeof oopsMessage === 'function' ? oopsMessage() : oopsMessage}
                 </View>
                 ) : (
-                    // Exibe o `box` com o relatório se houver dados
                     <View style={styles.box}>
                         <Text style={styles.sectionTitle}>
                             Relatório de{selectedPeriod === 'hoje' ? ' Hoje' : selectedPeriod === 'estaSemana' ? 'sta Semana' : 'ste Mês'}

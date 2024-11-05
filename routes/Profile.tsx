@@ -64,10 +64,8 @@ export default function Profile({ navigation }) {
                         try {
                             const user = auth.currentUser;
                             if (user) {
-                                // Remove os dados do usuário no Realtime Database
                                 await database.ref(`usuario/${user.uid}`).remove();
                                 
-                                // Remove o usuário do Firebase Auth
                                 await user.delete();
 
                                 Toast.show({
@@ -166,7 +164,7 @@ export default function Profile({ navigation }) {
                         <TextInput
                             style={styles.input}
                             value={userInfo.email}
-                            editable={false} // Always disabled
+                            editable={false}
                             placeholder="-"
                         />
                     </TouchableOpacity>
@@ -201,7 +199,6 @@ export default function Profile({ navigation }) {
                     <Text style={styles.buttonText}>Deslogar</Text>
                 </TouchableOpacity>
 
-                {/* Botão para excluir usuário */}
                 <TouchableOpacity style={globalstyles.deleteButton} onPress={handleDeleteUser}>
                     <Text style={styles.buttonText}>Excluir Conta</Text>
                 </TouchableOpacity>

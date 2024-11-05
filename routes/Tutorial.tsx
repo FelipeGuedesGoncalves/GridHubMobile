@@ -22,12 +22,12 @@ export default function Tutorial() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF', // Correspondente a @color/branco
+        backgroundColor: '#FFFFFF',
         alignItems: 'center',
     },
     title: {
-        fontSize: 24, // Ajuste conforme o estilo de @style/TituloFragments
-        fontWeight: 'bold', // Pode ser ajustado conforme a estilização desejada
+        fontSize: 24,
+        fontWeight: 'bold',
         padding: 16,
         color: '#9249FF'
     },

@@ -16,13 +16,13 @@ export default function Login({ navigation }) {
         const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
             if (currentUser) {
                 await checkUidInStorage(currentUser.uid);
-                setTimeout(() => navigation.navigate('MyTabs', { uid: currentUser.uid }), 1000); // Atraso para o Toast
+                setTimeout(() => navigation.navigate('MyTabs', { uid: currentUser.uid }), 1000);
             }
         });
         return () => unsubscribe();
     }, [navigation]);
 
-    // Função para verificar e registrar o UID no AsyncStorage
+
     async function checkUidInStorage(uid) {
         try {
             const storedUids = await AsyncStorage.getItem('JaAcessou');
@@ -59,7 +59,7 @@ export default function Login({ navigation }) {
             .then(async (response) => {
                 setUser(response.user);
                 await checkUidInStorage(response.user.uid);
-                setTimeout(() => navigation.navigate('MyTabs', { uid: response.user.uid }), 1000); // Atraso para o Toast
+                setTimeout(() => navigation.navigate('MyTabs', { uid: response.user.uid }), 1000);
             })
             .catch(() => {
                 Toast.show({

@@ -35,7 +35,6 @@ export default function Cadastro({ navigation }) {
         });
     
         const relatorioInicial = { ...relatorioInicialAnalise }
-        // Cria a estrutura inicial das análises com valores vazios
         database.ref(`relatorios/${user?.uid}`).set({
             uid: user?.uid,
             ...relatorioInicial
@@ -49,7 +48,6 @@ export default function Cadastro({ navigation }) {
         });
 
         const analiseInicial = { ...dadosIniciaisAnalise }
-        // Cria a estrutura inicial das análises com valores vazios
         database.ref(`analises/${user?.uid}`).set({
             uid: user?.uid,
             ...analiseInicial
@@ -74,7 +72,6 @@ export default function Cadastro({ navigation }) {
             return;
         }
 
-        // Verifica a existência do CNPJ
         const cnpjData: CnpjResponse | null = await checkCnpj(cnpj);
         if (!cnpjData) {
             Toast.show({
@@ -85,7 +82,6 @@ export default function Cadastro({ navigation }) {
             return;
         }
 
-        // Continue com a criação do usuário
         auth
             .createUserWithEmailAndPassword(email, password)
             .then((response) => {
@@ -122,7 +118,7 @@ export default function Cadastro({ navigation }) {
                 <View style={styles.header}>
                     <Image
                         style={styles.logo}
-                        source={require('@/assets/images/insightwiselogo.png')} // Ajuste o caminho conforme necessário
+                        source={require('@/assets/images/insightwiselogo.png')}
                     />
                     <TouchableOpacity
                         style={globalstyles.button}
