@@ -25,8 +25,8 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.fiap.insightwisemobileandroid"/>
-        <data android:scheme="exp+insightwisemobile"/>
+        <data android:scheme="com.fiap.GridHubmobileandroid"/>
+        <data android:scheme="exp+GridHubmobile"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "InsightWiseMobile",
-    "slug": "InsightWiseMobile",
+    "name": "GridHubMobile",
+    "slug": "GridHubMobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/insightwiseicon.png",
+    "icon": "./assets/images/GridHubicon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -17,10 +17,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/insightwiseicon.png",
+        "foregroundImage": "./assets/images/GridHubicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.fiap.insightwisemobileandroid"
+      "package": "com.fiap.GridHubmobileandroid"
     },
     "web": {
       "bundler": "metro",

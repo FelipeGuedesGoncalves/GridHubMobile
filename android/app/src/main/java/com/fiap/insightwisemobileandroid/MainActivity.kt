@@ -1,4 +1,4 @@
-package com.fiap.insightwisemobileandroid
+package com.fiap.GridHubmobileandroid
 
 import android.os.Build
 import android.os.Bundle

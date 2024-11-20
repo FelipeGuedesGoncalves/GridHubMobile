@@ -1,10 +1,8 @@
 export const appcolors = {
-    roxoescuro: '#33066F',
-    roxomedio: '#650FC8',
-    roxo: '#8724FF',
-    roxoleve: '#9249FF',
-    roxoclaro:'#AA7EFF',
-    lilas:'#DDD1FF',
+    azulescuro: '#2337B7',
+    azul: '#0087FF',
+    azulprincipal: '#20B8FF',
+    azulbebe: '#84E6FF',
     branco:'#FFFFFF',
     Preto:'#000000'
 }

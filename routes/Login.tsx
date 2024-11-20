@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalstyles } from '@/styles/globalstyles';
+import { appcolors } from '@/styles/appcolors';
 
 export default function Login({ navigation }) {
     const [email, setEmail] = useState('');
@@ -72,22 +73,22 @@ export default function Login({ navigation }) {
 
     return (
         <LinearGradient
-            colors={['#7913EE', '#9249FF']}
+            colors={[appcolors.azulescuro, appcolors.azulprincipal]}
             style={styles.container}
         >
             <Text style={styles.welcomeText}>Seja Bem-Vindo(a) de volta ao</Text>
-            <Image source={require('@/assets/images/insightwiselogo.png')} style={styles.logo} />
+            <Image source={require('@/assets/images/GridHubTextLogoWhite.png')} style={styles.logo} />
 
             <TextInput
                 style={styles.input}
                 placeholder='Email'
-                placeholderTextColor="#4B0082"
+                placeholderTextColor={appcolors.azulescuro}
                 onChangeText={(text) => setEmail(text)}
             />
             <TextInput
                 style={styles.input}
                 placeholder='Senha'
-                placeholderTextColor="#4B0082"
+                placeholderTextColor={appcolors.azulescuro}
                 onChangeText={(text) => setPassword(text)}
                 secureTextEntry={true}
             />
@@ -136,14 +137,14 @@ const styles = StyleSheet.create({
     input: {
         width: 350,
         height: 60,
-        borderColor: '#6200EE',
+        borderColor: appcolors.azulescuro,
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 16,
         marginTop: 20,
         fontSize: 16,
         backgroundColor: '#FFF',
-        color: '#4B0082'
+        color: appcolors.azulescuro
     },
     orText: {
         marginTop: 12,

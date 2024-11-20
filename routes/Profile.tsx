@@ -128,7 +128,7 @@ export default function Profile({ navigation }) {
     const handleEmailPress = () => {
         Alert.alert(
             "Atenção",
-            "Por motivos de segurança, seu e-mail só pode ser alterado pela equipe InsightWise, caso deseje prosseguir, contate-nos via email - insightwisesuporte@gmail.com",
+            "Por motivos de segurança, seu e-mail só pode ser alterado pela equipe GridHub, caso deseje prosseguir, contate-nos via email - GridHubsuporte@gmail.com",
             [{ text: "OK" }]
         );
     };

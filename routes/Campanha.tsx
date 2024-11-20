@@ -1,20 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import YoutubePlayer from 'react-native-youtube-iframe';
 
 
-export default function Tutorial() {
+export default function Campanha() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tutorial</Text>
-            <View>
-                <YoutubePlayer
-                    height={200}
-                    width={300}
-                    play={false}
-                    videoId={'B6ZZIZmo8L0'}
-                />
-            </View>
+            <Text style={styles.title}>Campanha de Investimento</Text>
         </View>
     );
 }

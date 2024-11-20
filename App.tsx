@@ -1,15 +1,15 @@
-import Cadastro from '@/routes/Cadastro';
-import Dashboard from '@/routes/Dashboard';
-import Login from '@/routes/Login';
-import Profile from '@/routes/Profile';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
-import Relatorio from './routes/Relatorio';
-import Tutorial from './routes/Tutorial';
-import Toast from 'react-native-toast-message';
+import Cadastro from '@/routes/Cadastro';
+import Login from '@/routes/Login';
+import Profile from '@/routes/Profile';
+import Campanha from './routes/Campanha';
+import EspacosAlugaveis from './routes/EspacosAlugaveis';
+import EspacosDoUsuario from './routes/EspacosDoUsuario';
+import MicrogridsDoUsuario from './routes/MicrogridsDoUsuario';
 
 // Criação dos navegadores
 const Stack = createStackNavigator();
@@ -44,57 +44,70 @@ function MyTabs() {
         tabBarItemStyle: styles.tabBarItemStyle,
       }}
     >
-      <Tab.Screen 
-        name="Dashboard" 
-        component={Dashboard}
+      <Tab.Screen
+        name="Campanha"
+        component={Campanha}
         options={{
           tabBarLabel: () => null,
           tabBarIcon: () => (
             <Image
-              source={require('@/assets/images/dashboardicon.png')}
+              source={require('@/assets/images/CampanhaFinanciamento.png')}
               style={styles.tabIcon}
             />
           ),
-        }} 
+        }}
       />
-      <Tab.Screen 
-        name="Relatorio" 
-        component={Relatorio}
+      <Tab.Screen
+        name="EspacosAlugaveis"
+        component={EspacosAlugaveis}
         options={{
-          tabBarLabel: () => null, 
+          tabBarLabel: () => null,
           tabBarIcon: () => (
             <Image
-              source={require('@/assets/images/papericon.png')}
+              source={require('@/assets/images/EspacosAlugaveis.png')}
               style={styles.tabIcon}
             />
           ),
-        }} 
+        }}
       />
-      <Tab.Screen 
-        name="Tutorial" 
-        component={Tutorial}
+      <Tab.Screen
+        name="EspacosDoUsuario"
+        component={EspacosDoUsuario}
         options={{
-          tabBarLabel: () => null, 
+          tabBarLabel: () => null,
           tabBarIcon: () => (
             <Image
-              source={require('@/assets/images/tutorialicon.png')}
+              source={require('@/assets/images/EspacosDoUsuario.png')}
               style={styles.tabIcon}
             />
           ),
-        }} 
+        }}
       />
-      <Tab.Screen 
-        name="Profile" 
+      <Tab.Screen
+        name="MicrogridsDoUsuario"
+        component={MicrogridsDoUsuario}
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: () => (
+            <Image
+              source={require('@/assets/images/Microgrids.png')}
+              style={styles.tabIcon}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: () => null, 
+          tabBarLabel: () => null,
           tabBarIcon: () => (
             <Image
-              source={require('@/assets/images/profileicon.png')}
+              source={require('@/assets/images/PerfilDoUsuario.png')}
               style={styles.tabIcon}
             />
           ),
-        }} 
+        }}
       />
     </Tab.Navigator>
   );

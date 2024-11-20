@@ -9,6 +9,7 @@ import { checkCnpj } from '@/client/client';
 import { CnpjResponse } from '@/models/CnpjResponse.interface';
 import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
 import { relatorioInicialAnalise } from '@/models/relatorioInicialAnalise';
+import { appcolors } from '@/styles/appcolors';
 
 export default function Cadastro({ navigation }) {
     const [name, setName] = useState('');
@@ -113,12 +114,12 @@ export default function Cadastro({ navigation }) {
     }
 
     return (
-        <LinearGradient colors={['#7913EE', '#9249FF']} style={styles.container}>
+        <LinearGradient colors={[appcolors.azulescuro, appcolors.azul]} style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
                     <Image
                         style={styles.logo}
-                        source={require('@/assets/images/insightwiselogo.png')}
+                        source={require('@/assets/images/GridHubTextLogoWhite.png')}
                     />
                     <TouchableOpacity
                         style={globalstyles.button}
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#650FC8'
+        color: appcolors.azulescuro
     },
     scrollView: {
         flex: 1,
@@ -230,22 +231,22 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#650FC8'
+        color: appcolors.azulescuro
     },
     profileSubtitle: {
         marginBottom: 20,
-        color: '#650FC8'
+        color: appcolors.azulescuro
     },
     profileLabel: {
         marginTop: 16,
         fontWeight: 'bold',
-        color: '#650FC8'
+        color: appcolors.azulescuro
     },
     input: {
         height: 40,
         borderBottomWidth: 1,
         marginBottom: 20,
-        borderColor: '#650FC8',
-        color: '#650FC8'
+        borderColor: appcolors.azulescuro,
+        color: appcolors.azulescuro
     },
 });
