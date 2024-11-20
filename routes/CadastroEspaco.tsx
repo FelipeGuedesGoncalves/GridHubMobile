@@ -122,6 +122,8 @@ export default function CadastroEspaco({ navigation }) {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>Cadastrar Espaço</Text>
                 <View style={styles.whiteBlock}>
+                <Text style={styles.profileTitle}>Endereço</Text>
+                <Text style={styles.profileSubtitle}>O CEP preenche automaticamente todos os campos com exceção do número, para redefinir o endereço, altere o CEP</Text>
                     <Text style={styles.profileLabel}>CEP</Text>
                     <TextInput
                         style={styles.input}
@@ -161,12 +163,15 @@ export default function CadastroEspaco({ navigation }) {
                         maxLength={2}
                         editable={!isAddressLocked}
                     />
-                    <Text style={styles.profileLabel}>Fontes de Energia</Text>
+                    <Text style={styles.profileTitle}>Fontes de Energia</Text>
+                    <Text style={styles.profileSubtitle}>Preencha com as fontes de energia que o espaço tem preparação para receber</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
                         onChangeText={(text) => setFontesEnergia(text)}
                     />
+                    <Text style={styles.profileTitle}>Sobre o Espaço</Text>
+                    <Text style={styles.profileSubtitle}>Preencha com informações sobre o Espaço</Text>
                     <Text style={styles.profileLabel}>Nome do Espaço</Text>
                     <TextInput
                         style={styles.input}
@@ -254,10 +259,20 @@ const styles = StyleSheet.create({
         elevation: 2,
         marginBottom: 20,
     },
+    profileTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: appcolors.azulescuro
+    },
+    profileSubtitle: {
+        marginBottom: 20,
+        color: appcolors.azulescuro
+    },
     profileLabel: {
         marginTop: 16,
         fontWeight: 'bold',
-        color: appcolors.azulescuro,
+        color: appcolors.azulescuro
     },
     input: {
         height: 40,
