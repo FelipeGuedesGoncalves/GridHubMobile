@@ -11,6 +11,7 @@ import EspacosAlugaveis from './routes/EspacosAlugaveis';
 import EspacosDoUsuario from './routes/EspacosDoUsuario';
 import MicrogridsDoUsuario from './routes/MicrogridsDoUsuario';
 import { appcolors } from './styles/appcolors';
+import CadastroEspaco from './routes/CadastroEspaco';
 
 // Criação dos navegadores
 const Stack = createStackNavigator();
@@ -108,6 +109,14 @@ function MyTabs() {
               style={styles.tabIcon}
             />
           ),
+        }}
+      />
+            <Tab.Screen
+        name="CadastroEspaco"
+        component={CadastroEspaco}
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: () => null,
         }}
       />
     </Tab.Navigator>
