@@ -30,10 +30,6 @@ export default function Login({ navigation }) {
             const uids = storedUids ? JSON.parse(storedUids) : [];
 
             if (!uids.includes(uid)) {
-                Toast.show({
-                    type: 'success',
-                    text1: 'Bem Vindo(a), considere assistir nosso tutorial',
-                });
 
                 console.log('Novo usuário detectado, registrando no AsyncStorage');
                 

@@ -1,3 +1,4 @@
+import { appcolors } from '@/styles/appcolors';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -20,6 +21,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         padding: 16,
-        color: '#9249FF'
+        color: appcolors.azulescuro
     },
 });

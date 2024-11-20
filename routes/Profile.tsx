@@ -4,13 +4,11 @@ import { auth, database } from '@/components/Firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
 import { globalstyles } from '@/styles/globalstyles';
-import { CnpjResponse } from '@/models/CnpjResponse.interface';
-import { checkCnpj } from '@/client/client';
+import { appcolors } from '@/styles/appcolors';
 
 export default function Profile({ navigation }) {
     const [userInfo, setUserInfo] = useState({
         name: '',
-        cnpj: '',
         telefone: '',
         email: ''
     });
@@ -105,22 +103,6 @@ export default function Profile({ navigation }) {
         }
     };
 
-    const handleCnpjVerification = async () => {
-        const cnpjData: CnpjResponse | null = await checkCnpj(userInfo.cnpj);
-        if (!cnpjData) {
-            Toast.show({
-                type: 'error',
-                text1: 'Erro',
-                text2: 'CNPJ não encontrado. Verifique e tente novamente.',
-            });
-            fetchUserData();
-            setIsEditing(false);
-            return;
-        } else {
-            handleSaveChanges();
-        }
-    }
-
     const handleCancelEdit = () => {
         setIsEditing(false);
     };
@@ -134,28 +116,19 @@ export default function Profile({ navigation }) {
     };
 
     return (
-        <LinearGradient colors={['#7913EE', '#9249FF']} style={styles.container}>
+        <LinearGradient colors={[appcolors.azulescuro, appcolors.azul]} style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                <Text style={styles.title}>Perfil da Empresa</Text>
+                <Text style={styles.title}>Perfil do Usuário</Text>
 
                 <View style={styles.whiteBlock}>
-                    <Text style={styles.profileTitle}>Dados da Empresa</Text>
+                    <Text style={styles.profileTitle}>Dados do Usuário</Text>
 
-                    <Text style={styles.profileLabel}>Nome da empresa</Text>
+                    <Text style={styles.profileLabel}>Nome do Usuário</Text>
                     <TextInput
                         style={styles.input}
                         value={userInfo.name}
                         editable={isEditing}
                         onChangeText={(text) => setUserInfo({ ...userInfo, name: text })}
-                        placeholder="-"
-                    />
-
-                    <Text style={styles.profileLabel}>CNPJ</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={userInfo.cnpj}
-                        editable={isEditing}
-                        onChangeText={(text) => setUserInfo({ ...userInfo, cnpj: text })}
                         placeholder="-"
                     />
 
@@ -182,7 +155,7 @@ export default function Profile({ navigation }) {
 
                 {isEditing ? (
                     <>
-                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleCnpjVerification}>
+                        <TouchableOpacity style={globalstyles.largebutton} onPress={handleSaveChanges}>
                             <Text style={styles.buttonText}>Salvar alterações</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={globalstyles.largebutton} onPress={handleCancelEdit}>
@@ -234,24 +207,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#7913EE',
+        color: appcolors.azulescuro,
     },
     profileLabel: {
         fontSize: 14,
         marginVertical: 5,
-        color: '#7913EE',
+        color: appcolors.azulescuro,
     },
     input: {
         borderBottomWidth: 1,
-        borderBottomColor: '#7913EE',
+        borderBottomColor: appcolors.azulescuro,
         marginBottom: 20,
         padding: 8,
         fontSize: 16,
-        color: '#650FC8',
+        color: appcolors.azulescuro,
     },
     emailTouchable: {
         borderBottomWidth: 1,
-        borderBottomColor: '#7913EE',
+        borderBottomColor: appcolors.azulescuro,
         marginBottom: 20,
     },
     buttonText: {

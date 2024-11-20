@@ -10,6 +10,7 @@ import Campanha from './routes/Campanha';
 import EspacosAlugaveis from './routes/EspacosAlugaveis';
 import EspacosDoUsuario from './routes/EspacosDoUsuario';
 import MicrogridsDoUsuario from './routes/MicrogridsDoUsuario';
+import { appcolors } from './styles/appcolors';
 
 // Criação dos navegadores
 const Stack = createStackNavigator();
@@ -116,7 +117,7 @@ function MyTabs() {
 // Estilos
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: '#4a00ac', // Cor de fundo similar ao gradient
+    backgroundColor: appcolors.azulescuro, // Cor de fundo similar ao gradient
     elevation: 0, // Remove a sombra
     height: 87,
     justifyContent: 'center',

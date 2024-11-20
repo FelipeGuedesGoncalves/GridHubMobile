@@ -5,15 +5,10 @@ import { User } from '@/models/User.interface';
 import { LinearGradient } from 'expo-linear-gradient';
 import { globalstyles } from '@/styles/globalstyles';
 import Toast from 'react-native-toast-message';
-import { checkCnpj } from '@/client/client';
-import { CnpjResponse } from '@/models/CnpjResponse.interface';
-import { dadosIniciaisAnalise } from '@/models/dadosIniciaisAnalise';
-import { relatorioInicialAnalise } from '@/models/relatorioInicialAnalise';
 import { appcolors } from '@/styles/appcolors';
 
 export default function Cadastro({ navigation }) {
     const [name, setName] = useState('');
-    const [cnpj, setCnpj] = useState('');
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,61 +19,31 @@ export default function Cadastro({ navigation }) {
             navigation.navigate('Login', { uid: user?.uid });
             saveUserOnDatabase();
         }
-    }, [user]); 
+    }, [user]);
 
     async function saveUserOnDatabase() {
-        // Salva as informações do usuário
-        database.ref(`usuario/${user?.uid}`).set({
-            name: name,
-            cnpj: cnpj,
-            telefone: telefone,
-            email: email
-        });
-    
-        const relatorioInicial = { ...relatorioInicialAnalise }
-        database.ref(`relatorios/${user?.uid}`).set({
-            uid: user?.uid,
-            ...relatorioInicial
-            
-        })
-        .then((response) => {
-            console.log('Relatórios inicializados com sucesso:', response);
-        })
-        .catch((error) => {
-            console.log('Erro ao inicializar relatórios:', error);
-        });
-
-        const analiseInicial = { ...dadosIniciaisAnalise }
-        database.ref(`analises/${user?.uid}`).set({
-            uid: user?.uid,
-            ...analiseInicial
-            
-        })
-        .then((response) => {
-            console.log('Análises inicializadas com sucesso:', response);
-        })
-        .catch((error) => {
-            console.log('Erro ao inicializar análises:', error);
-        });
+        // Salva as informações básicas do usuário no banco de dados
+        database
+            .ref(`usuario/${user?.uid}`)
+            .set({
+                name: name,
+                telefone: telefone,
+                email: email,
+            })
+            .then(() => {
+                console.log('Usuário salvo no banco de dados com sucesso.');
+            })
+            .catch((error) => {
+                console.log('Erro ao salvar usuário no banco de dados:', error);
+            });
     }
-    
 
     async function createUser() {
-        if (!name || !cnpj || !telefone || !email || !password) {
+        if (!name || !telefone || !email || !password) {
             Toast.show({
                 type: 'error',
                 text1: 'Erro',
                 text2: 'Todos os campos devem ser preenchidos',
-            });
-            return;
-        }
-
-        const cnpjData: CnpjResponse | null = await checkCnpj(cnpj);
-        if (!cnpjData) {
-            Toast.show({
-                type: 'error',
-                text1: 'Erro',
-                text2: 'CNPJ não encontrado. Verifique e tente novamente.',
             });
             return;
         }
@@ -130,20 +95,16 @@ export default function Cadastro({ navigation }) {
                 </View>
                 <Text style={styles.title}>Faça seu Cadastro</Text>
                 <View style={styles.whiteBlock}>
-                    <Text style={styles.profileTitle}>Dados da empresa</Text>
-                    <Text style={styles.profileSubtitle}>Preencha com base nos dados da sua empresa</Text>
-                    <Text style={styles.profileLabel}>Nome da empresa</Text>
+                    <Text style={styles.profileTitle}>Credenciais</Text>
+                    <Text style={styles.profileSubtitle}>
+                        Você usará estas credenciais para realizar login em nossa plataforma
+                    </Text>
+                    <Text style={styles.profileLabel}>Email</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
-                        onChangeText={(text) => setName(text)}
-                    />
-                    <Text style={styles.profileLabel}>CNPJ</Text>
-                    <Text style={styles.profileSubtitle}>(Preencher sem formatação - apenas com números)</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="-"
-                        onChangeText={(text) => setCnpj(text)}
+                        onChangeText={(text) => setEmail(text)}
+                        keyboardType="email-address"
                     />
                     <Text style={styles.profileLabel}>Senha</Text>
                     <TextInput
@@ -152,14 +113,13 @@ export default function Cadastro({ navigation }) {
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true}
                     />
-                    <Text style={styles.profileTitle}>Contatos</Text>
-                    <Text style={styles.profileSubtitle}>Enviaremos boletos, informações úteis e códigos nestes contatos. (o Email cadastrado também será utilizado para login)</Text>
-                    <Text style={styles.profileLabel}>Email</Text>
+                    <Text style={styles.profileTitle}>Dados restantes</Text>
+                    <Text style={styles.profileSubtitle}>Preencha com base nos seus dados</Text>
+                    <Text style={styles.profileLabel}>Nome</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
-                        onChangeText={(text) => setEmail(text)}
-                        keyboardType="email-address"
+                        onChangeText={(text) => setName(text)}
                     />
                     <Text style={styles.profileLabel}>Telefone</Text>
                     <TextInput
@@ -187,7 +147,7 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
     },
     scrollView: {
         flex: 1,
@@ -204,14 +164,14 @@ const styles = StyleSheet.create({
         height: 50,
         marginLeft: 20,
         marginRight: 90,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     title: {
         fontSize: 22,
         color: '#FFFFFF',
         marginBottom: 40,
         marginLeft: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     whiteBlock: {
         backgroundColor: 'white',
@@ -231,22 +191,22 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
     },
     profileSubtitle: {
         marginBottom: 20,
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
     },
     profileLabel: {
         marginTop: 16,
         fontWeight: 'bold',
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
     },
     input: {
         height: 40,
         borderBottomWidth: 1,
         marginBottom: 20,
         borderColor: appcolors.azulescuro,
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
     },
 });
