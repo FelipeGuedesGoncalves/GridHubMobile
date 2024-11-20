@@ -1,11 +1,11 @@
-import { Button, StyleSheet, TextInput, View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import { Button, StyleSheet, TextInput, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { database, auth } from '@/components/Firebase';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { globalstyles } from '@/styles/globalstyles';
 import Toast from 'react-native-toast-message';
 import { appcolors } from '@/styles/appcolors';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 
 
 export default function CadastroMicrogrid({ navigation }) {
@@ -96,49 +96,69 @@ export default function CadastroMicrogrid({ navigation }) {
                 <Text style={styles.title}>Cadastrar Microgrid</Text>
                 <View style={styles.whiteBlock}>
                     <Text style={styles.profileTitle}>Informações da Microgrid</Text>
+                    <Text style={styles.profileSubtitle}>Estas informações serão exibidas a todos os usuários da plataforma</Text>
+                    <Text style={styles.profileLabel}>Nome da Microgrid</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Nome da Microgrid"
+                        placeholder="-"
                         onChangeText={(text) => setNomeMicrogrid(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileLabel}>Média Anual de Radiação Solar Necessária</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Média Anual de Radiação Solar Necessária"
+                        placeholder="-"
                         keyboardType="numeric"
                         onChangeText={(text) => setMediaRadiacao(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileLabel}>Topografia Necessária</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Topografia Necessária"
+                        placeholder="-"
                         onChangeText={(text) => setTopografia(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileLabel}>Área Total Necessária</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Área Total Necessária"
+                        placeholder="-"
                         keyboardType="numeric"
                         onChangeText={(text) => setAreaTotal(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileLabel}>Velocidade Média do Vento Necessária</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Velocidade Média do Vento Necessária"
+                        placeholder="-"
                         keyboardType="numeric"
                         onChangeText={(text) => setVelocidadeVento(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileTitle}>Fontes de Energia</Text>
+                    <Text style={styles.profileSubtitle}>Indique por quais fontes de energia a Microgrid é composta</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Fontes de Energia"
+                        placeholder="-"
                         onChangeText={(text) => setFontesEnergia(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileTitle}>API de exibição de relatórios</Text>
+                    <Text style={styles.profileSubtitle}>Indique o link da API de exibição dos dados do seu equipamento, é através dele que nossa aplicação exibirá gráficos com informações importantes</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="API de Exibição de Relatórios"
+                        placeholder="-"
                         onChangeText={(text) => setApiRelatorio(text)}
+                        autoCapitalize="none"
                     />
+                    <Text style={styles.profileTitle}>Meta de financiamento</Text>
+                    <Text style={styles.profileSubtitle}>Insira aqui uma meta de financiam,ento para que investidores interessados possam ofertar para pagar uma parcela dela</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Meta de Financiamento"
+                        placeholder="-"
                         keyboardType="numeric"
                         onChangeText={(text) => setMetaFinanciamento(text)}
+                        autoCapitalize="none"
                     />
                     <Text style={styles.profileLabel}>Escolha o Espaço</Text>
                     <Picker
@@ -196,12 +216,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: appcolors.azulescuro,
+        marginTop: 20,
+        color: appcolors.azulescuro
+    },
+    profileSubtitle: {
+        marginBottom: 20,
+        color: appcolors.azulescuro
     },
     profileLabel: {
         marginTop: 16,
         fontWeight: 'bold',
-        color: appcolors.azulescuro,
+        color: appcolors.azulescuro
     },
     input: {
         height: 40,

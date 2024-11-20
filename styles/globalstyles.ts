@@ -56,7 +56,7 @@ export const globalstyles = StyleSheet.create({
     addbutton: {
       width: 'auto',
       height: 60,
-      borderColor: '#ffffff0',
+      borderColor: '#fffff0',
       borderWidth: 2,
       borderRadius: 20,
       paddingHorizontal: 16,
@@ -70,6 +70,28 @@ export const globalstyles = StyleSheet.create({
     },
     addbuttontext: {
       fontSize: 16,
+      color: '#ffffff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    morebutton: {
+      width: 100,
+      height: 50,
+      borderColor: '#fffff0',
+      borderWidth: 2,
+      borderRadius: 50,
+      paddingHorizontal: 16,
+      marginTop: 20,
+      fontSize: 16,
+      backgroundColor: appcolors.azulescuro,
+      color: '#ffffff',
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: '67%'
+    },
+    morebuttontext: {
+      fontSize: 12,
       color: '#ffffff',
       textAlign: 'center',
       fontWeight: 'bold',

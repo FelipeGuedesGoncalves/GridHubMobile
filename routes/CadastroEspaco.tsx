@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
+        marginTop: 20,
         color: appcolors.azulescuro
     },
     profileSubtitle: {
