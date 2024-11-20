@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     oopsText: {
         fontSize: 13,
-        color: appcolors.roxoclaro,
+        color: appcolors.azul,
         justifyContent: 'center',
         alignItems: 'center',
         width: '80%',
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     oopsTitle: {
         fontSize: 17,
-        color: appcolors.roxo,
+        color: appcolors.azulescuro,
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',

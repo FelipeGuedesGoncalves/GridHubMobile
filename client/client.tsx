@@ -1,13 +1,13 @@
-// client.tsx
 import axios from 'axios';
-import { CnpjResponse } from '@/models/CnpjResponse.interface';
+import { CepResponse } from '@/models/CepResponse.interface';
 
-export async function checkCnpj(cnpj: string): Promise<CnpjResponse | null> {
+export async function checkCep(cep: string): Promise<CepResponse | null> {
     try {
-        const response = await axios.get<CnpjResponse>(`https://open.cnpja.com/office/${cnpj}`);
+        // Fazendo a requisição para a API ViaCEP
+        const response = await axios.get<CepResponse>(`https://viacep.com.br/ws/${cep}/json/`);
         return response.data;
     } catch (error) {
-        console.log("Erro ao verificar CNPJ:", error);
+        console.log("Erro ao verificar CEP:", error);
         return null;
     }
 }

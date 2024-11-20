@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { appcolors } from "./appcolors";
 
 export const globalstyles = StyleSheet.create({
     largebutton: {
@@ -51,5 +52,26 @@ export const globalstyles = StyleSheet.create({
       color: '#ffffff',
       textAlign: 'center',
       fontWeight: 'bold',
-    }
+    },
+    addbutton: {
+      width: 'auto',
+      height: 60,
+      borderColor: '#ffffff0',
+      borderWidth: 2,
+      borderRadius: 20,
+      paddingHorizontal: 16,
+      marginTop: 20,
+      fontSize: 16,
+      backgroundColor: appcolors.azulescuro,
+      color: '#ffffff',
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    addbuttontext: {
+      fontSize: 16,
+      color: '#ffffff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
   })
