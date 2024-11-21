@@ -14,7 +14,6 @@ import { appcolors } from './styles/appcolors';
 import CadastroEspaco from './routes/CadastroEspaco';
 import CadastroMicrogrids from './routes/CadastroMicrogrids';
 
-// Criação dos navegadores
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
@@ -135,22 +134,22 @@ function MyTabs() {
 // Estilos
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: appcolors.azulescuro, // Cor de fundo similar ao gradient
-    elevation: 0, // Remove a sombra
+    backgroundColor: appcolors.azulescuro,
+    elevation: 0,
     height: 87,
     justifyContent: 'center',
     paddingTop: 20
   },
   tabBarIndicatorStyle: {
-    backgroundColor: '#ffffff', // Indicador em amarelo
-    height: 1.5, // Altura do indicador
+    backgroundColor: '#ffffff',
+    height: 1.5,
   },
   tabBarItemStyle: {
-    flex: 1, // Ocupa o espaço igual entre as abas
-    alignItems: 'center', // Centraliza o conteúdo
+    flex: 1,
+    alignItems: 'center',
   },
   tabIcon: {
-    width: 30, // Largura do ícone
-    height: 30, // Altura do ícone
+    width: 30,
+    height: 30,
   },
 });
