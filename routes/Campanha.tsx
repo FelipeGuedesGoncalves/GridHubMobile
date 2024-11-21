@@ -1,18 +1,18 @@
+import { firebase } from '@/components/Firebase';
 import { appcolors } from '@/styles/appcolors';
 import { globalstyles } from '@/styles/globalstyles';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { firebase } from '@/components/Firebase';
-
+ 
 export default function Campanha() {
   const [microgrids, setMicrogrids] = useState([]);
   const [espacos, setEspacos] = useState({});
-
+ 
   useEffect(() => {
     const microgridRef = firebase.database().ref('microgrids');
     const espacoRef = firebase.database().ref('espacos');
-
+ 
     microgridRef.on('value', (microgridSnapshot) => {
       const microgridsData = [];
       microgridSnapshot.forEach((childSnapshot) => {
@@ -20,7 +20,7 @@ export default function Campanha() {
       });
       setMicrogrids(microgridsData);
     });
-
+ 
     // Escutando os espaços em tempo real
     espacoRef.on('value', (espacoSnapshot) => {
       const espacosData = {};
@@ -29,17 +29,17 @@ export default function Campanha() {
       });
       setEspacos(espacosData);
     });
-
-
+ 
+ 
     return () => {
       microgridRef.off();
       espacoRef.off();
     };
   }, []);
-
+ 
   const renderItem = ({ item }) => {
     const nomeEspaco = espacos[item.espacoId] || 'Espaço não encontrado';
-
+ 
     return (
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{item.nomeMicrogrid}</Text>
@@ -53,9 +53,9 @@ export default function Campanha() {
       </View>
     );
   };
-
+ 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Campanha de Investimento</Text>
       <Text style={styles.subtitle}>
         Descubra oportunidades incríveis na GridHub e torne-se parte da transformação energética.
@@ -70,17 +70,18 @@ export default function Campanha() {
         initialNumToRender={10}
         onEndReachedThreshold={0.5}
       />
-    </View>
+    </SafeAreaView>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: '#fffff00',
     alignItems: 'center',
     paddingTop: 20,
-    padding: 0
+    padding: 0,
+    paddingBottom: 80,
   },
   title: {
     fontSize: 24,
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 50,
+    paddingBottom: 80,
   },
 });
+ 
