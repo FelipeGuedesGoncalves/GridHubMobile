@@ -5,6 +5,7 @@ import { appcolors } from '@/styles/appcolors';
 import { firebase } from '@/components/Firebase';
 import { globalstyles } from '@/styles/globalstyles';
 import CadastroMicrogrid from './CadastroMicrogrids';
+import DetalhesMicrogrid from './DetalhesMicrogrid'; // Importando a tela de detalhes
 
 const Stack = createStackNavigator(); // Criando o stack navigator
 
@@ -46,7 +47,10 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
       <Text style={styles.cardContent}>{item.areaTotal} m²</Text>
       <Text style={styles.cardSubtitle}>Meta de financiamento:</Text>
       <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
-      <TouchableOpacity style={globalstyles.morebutton}>
+      <TouchableOpacity
+        style={globalstyles.morebutton}
+        onPress={() => navigation.navigate('DetalhesMicrogrid', { microgridId: item.id })} // Navegação para detalhes
+      >
         <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
       </TouchableOpacity>
     </View>
@@ -67,7 +71,7 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
           >
             <Text style={globalstyles.addbuttontext}>Adicionar Microgrid</Text>
           </TouchableOpacity>
-        } // Adicionando o botão no final da lista
+        }
       />
     </View>
   );
@@ -89,6 +93,14 @@ export default function MicrogridsDoUsuario() {
         component={CadastroMicrogrid}
         options={{
           title: 'Cadastrar Microgrid',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DetalhesMicrogrid" // Adicionando a tela de detalhes da microgrid
+        component={DetalhesMicrogrid}
+        options={{
+          title: 'Detalhes da Microgrid',
           headerShown: false,
         }}
       />
