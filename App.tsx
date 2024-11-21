@@ -111,22 +111,6 @@ function MyTabs() {
           ),
         }}
       />
-            <Tab.Screen
-        name="CadastroEspaco"
-        component={CadastroEspaco}
-        options={{
-          tabBarLabel: () => null,
-          tabBarIcon: () => null,
-        }}
-      />
-                  <Tab.Screen
-        name="CadastroMicrogrids"
-        component={CadastroMicrogrids}
-        options={{
-          tabBarLabel: () => null,
-          tabBarIcon: () => null,
-        }}
-      />
     </Tab.Navigator>
   );
 }

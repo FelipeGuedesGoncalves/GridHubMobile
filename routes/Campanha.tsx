@@ -38,15 +38,15 @@ export default function Campanha() {
   }, []);
  
   const renderItem = ({ item }) => {
-    const nomeEspaco = espacos[item.espacoId] || 'Espaço não encontrado';
- 
     return (
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{item.nomeMicrogrid}</Text>
         <Text style={styles.cardSubtitle}>Produz energia pelas fontes:</Text>
         <Text style={styles.cardContent}>{item.fontesEnergia}</Text>
-        <Text style={styles.cardSubtitle}>Localizado no espaço:</Text>
-        <Text style={styles.cardContent}>{nomeEspaco}</Text>
+        <Text style={styles.cardSubtitle}>Área Total:</Text>
+        <Text style={styles.cardContent}>{item.areaTotal} m²</Text>
+        <Text style={styles.cardSubtitle}>Meta de financiamento:</Text>
+        <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
         <TouchableOpacity style={globalstyles.morebutton}>
           <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
         </TouchableOpacity>

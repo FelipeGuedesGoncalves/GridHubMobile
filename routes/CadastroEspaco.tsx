@@ -77,6 +77,7 @@ export default function CadastroEspaco({ navigation }) {
                 text1: 'Erro',
                 text2: 'Todos os campos devem ser preenchidos',
             });
+            navigation.navigate('EspacosDoUsuario')
             return;
         }
 
