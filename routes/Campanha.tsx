@@ -3,24 +3,22 @@ import { globalstyles } from '@/styles/globalstyles';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { firebase } from '@/components/Firebase'; // Ajuste o caminho para o seu firebase
+import { firebase } from '@/components/Firebase';
 
 export default function Campanha() {
   const [microgrids, setMicrogrids] = useState([]);
-  const [espacos, setEspacos] = useState({}); // Usaremos um objeto para armazenar os dados dos espaços
+  const [espacos, setEspacos] = useState({});
 
   useEffect(() => {
-    // Carregar as microgrids em tempo real
     const microgridRef = firebase.database().ref('microgrids');
     const espacoRef = firebase.database().ref('espacos');
 
-    // Escutando as microgrids em tempo real
     microgridRef.on('value', (microgridSnapshot) => {
       const microgridsData = [];
       microgridSnapshot.forEach((childSnapshot) => {
         microgridsData.push({ id: childSnapshot.key, ...childSnapshot.val() });
       });
-      setMicrogrids(microgridsData); // Atualizando as microgrids
+      setMicrogrids(microgridsData);
     });
 
     // Escutando os espaços em tempo real
@@ -29,10 +27,10 @@ export default function Campanha() {
       espacoSnapshot.forEach((childSnapshot) => {
         espacosData[childSnapshot.key] = childSnapshot.val().nomeEspaco;
       });
-      setEspacos(espacosData); // Atualizando os espaços
+      setEspacos(espacosData);
     });
 
-    // Limpeza ao desmontar o componente
+
     return () => {
       microgridRef.off();
       espacoRef.off();
@@ -69,11 +67,8 @@ export default function Campanha() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatList}
-        initialNumToRender={10} // Defina o número inicial de renderizações
-        onEndReached={() => {
-          // Aqui, você pode adicionar lógica para carregar mais itens se necessário
-        }}
-        onEndReachedThreshold={0.5} // Defina o limite para o carregamento adicional
+        initialNumToRender={10}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );

@@ -14,7 +14,7 @@ export default function CadastroEspaco({ navigation }) {
     const [numero, setNumero] = useState('');
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
-    const [isAddressLocked, setIsAddressLocked] = useState(false); // Controla bloqueio dos campos
+    const [isAddressLocked, setIsAddressLocked] = useState(false);
     const [fontesEnergia, setFontesEnergia] = useState('');
     const [nomeEspaco, setNomeEspaco] = useState('');
     const [orientacaoSolar, setOrientacaoSolar] = useState('');
@@ -24,7 +24,6 @@ export default function CadastroEspaco({ navigation }) {
     const [direcaoVento, setDirecaoVento] = useState('');
     const [velocidadeVento, setVelocidadeVento] = useState('');
 
-    // Obtem o userId do usuário logado
     useEffect(() => {
         const currentUser = auth.currentUser;
         if (currentUser) {
@@ -39,11 +38,11 @@ export default function CadastroEspaco({ navigation }) {
         }
     }, []);
 
-    // Verifica CEP e preenche os campos automaticamente
+
     async function handleCepChange(inputCep) {
         setCep(inputCep);
 
-        // Apenas chama a API quando o CEP está completo
+
         if (inputCep.length === 8) {
             const response = await checkCep(inputCep);
 
@@ -51,19 +50,19 @@ export default function CadastroEspaco({ navigation }) {
                 setRua(response.logradouro);
                 setCidade(response.localidade);
                 setEstado(response.uf);
-                setIsAddressLocked(true); // Bloqueia os campos de endereço
+                setIsAddressLocked(true);
             } else {
                 Toast.show({
                     type: 'error',
                     text1: 'Erro',
                     text2: 'CEP inválido ou não encontrado.',
                 });
-                resetAddressFields(); // Limpa os campos caso o CEP seja inválido
+                resetAddressFields();
             }
         }
     }
 
-    // Reseta os campos de endereço para permitir uma nova entrada
+
     function resetAddressFields() {
         setRua('');
         setCidade('');

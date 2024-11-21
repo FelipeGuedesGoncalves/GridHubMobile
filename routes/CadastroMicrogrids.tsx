@@ -21,7 +21,6 @@ export default function CadastroMicrogrid({ navigation }) {
     const [espacos, setEspacos] = useState([]);
     const [espacoSelecionado, setEspacoSelecionado] = useState('');
 
-    // Obtem o userId do usuário logado
     useEffect(() => {
         const currentUser = auth.currentUser;
         if (currentUser) {
@@ -35,7 +34,6 @@ export default function CadastroMicrogrid({ navigation }) {
             navigation.goBack();
         }
 
-        // Carregar todos os espaços cadastrados
         database.ref('espacos').once('value', snapshot => {
             const espacosData = [];
             snapshot.forEach(childSnapshot => {

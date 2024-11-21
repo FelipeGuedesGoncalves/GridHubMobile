@@ -22,7 +22,6 @@ export default function Cadastro({ navigation }) {
     }, [user]);
 
     async function saveUserOnDatabase() {
-        // Salva as informações básicas do usuário no banco de dados
         database
             .ref(`usuario/${user?.uid}`)
             .set({
