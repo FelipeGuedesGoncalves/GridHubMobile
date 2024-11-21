@@ -112,19 +112,6 @@ function MyTabs() {
           ),
         }}
       />
-      <Tab.Screen
-        name="DetalhesMicrogrid"
-        component={DetalhesMicrogrid}
-        options={{
-          tabBarLabel: () => null,
-          tabBarIcon: () => (
-            <Image
-              source={require('@/assets/images/PerfilDoUsuario.png')}
-              style={styles.tabIcon}
-            />
-          ),
-        }}
-      />
     </Tab.Navigator>
   );
 }
