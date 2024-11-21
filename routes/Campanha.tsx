@@ -77,7 +77,7 @@ export default function Campanha() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fffff00',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     paddingTop: 20,
     padding: 0,

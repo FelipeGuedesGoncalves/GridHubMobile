@@ -2,6 +2,7 @@ import { appcolors } from '@/styles/appcolors';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { firebase } from '@/components/Firebase'; // Para acessar o Firebase
+import { ScrollView } from 'react-native';
 
 export default function DetalhesMicrogrid() {
     const [microgrid, setMicrogrid] = useState<any>(null);
@@ -37,12 +38,12 @@ export default function DetalhesMicrogrid() {
     }, []); // Executa apenas uma vez quando o componente é montado
 
     return (
+        <ScrollView>
         <View style={styles.container}>
-            <Text style={styles.title}>Detalhes da Microgrid</Text>
+            <Text style={styles.title}>{microgrid?.nomeMicrogrid || 'N/A'}</Text>
 
             <View style={styles.details}>
                 <View style={styles.infoblock}>
-                    <Text style={styles.detailsTitle}>{microgrid?.nomeMicrogrid || 'N/A'}</Text>
                     <Text style={styles.detailsSubtitle}>Especificidades</Text>
                     <Text style={styles.detailsContent}>Área total necessária: {microgrid?.areaTotal || 'N/A'} m²</Text>
                     <Text style={styles.detailsContent}>Média Anual de Radiação Solar Necessária: {microgrid?.mediaRadiacao || 'N/A'} kWh/m²</Text>
@@ -69,6 +70,8 @@ export default function DetalhesMicrogrid() {
                 </View>
             </View>
         </View>
+        </ScrollView>
+
     );
 }
 
@@ -77,19 +80,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
+        paddingTop: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         padding: 16,
-        color: appcolors.azulescuro
+        color: appcolors.azulescuro,
+      },
+    details: {
+        width: '80%',
+        marginTop: 10,
+        marginBottom: 20,
     },
-    details: {},
     infoblock: {},
     detailsTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         color: appcolors.azulescuro,
+        textAlign: 'center',
     },
     detailsSubtitle: {
         fontSize: 14,
@@ -100,5 +109,6 @@ const styles = StyleSheet.create({
     detailsContent: {
         fontSize: 14,
         color: appcolors.azulescuro,
+        marginVertical: 5,
     },
 });
