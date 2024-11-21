@@ -53,9 +53,21 @@ export default function CadastroMicrogrid({ navigation }) {
             });
             return;
         }
-
+    
+        // Garantir que o userId seja sempre o do usuário atual
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            Toast.show({
+                type: 'error',
+                text1: 'Erro',
+                text2: 'Usuário não autenticado.',
+            });
+            navigation.goBack();
+            return;
+        }
+    
         const novoMicrogrid = {
-            userId,
+            userId: currentUser.uid, // Obter diretamente o userId do currentUser
             nomeMicrogrid,
             mediaRadiacao,
             topografia,
@@ -66,7 +78,7 @@ export default function CadastroMicrogrid({ navigation }) {
             metaFinanciamento,
             espacoId: espacoSelecionado,
         };
-
+    
         database
             .ref('microgrids')
             .push(novoMicrogrid)
@@ -87,6 +99,7 @@ export default function CadastroMicrogrid({ navigation }) {
                 });
             });
     }
+    
 
     return (
         <LinearGradient colors={[appcolors.azulescuro, appcolors.azul]} style={styles.container}>

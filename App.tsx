@@ -13,6 +13,7 @@ import MicrogridsDoUsuario from './routes/MicrogridsDoUsuario';
 import { appcolors } from './styles/appcolors';
 import CadastroEspaco from './routes/CadastroEspaco';
 import CadastroMicrogrids from './routes/CadastroMicrogrids';
+import DetalhesMicrogrid from './routes/DetalhesMicrogrid';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -101,6 +102,19 @@ function MyTabs() {
       <Tab.Screen
         name="Profile"
         component={Profile}
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: () => (
+            <Image
+              source={require('@/assets/images/PerfilDoUsuario.png')}
+              style={styles.tabIcon}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="DetalhesMicrogrid"
+        component={DetalhesMicrogrid}
         options={{
           tabBarLabel: () => null,
           tabBarIcon: () => (
