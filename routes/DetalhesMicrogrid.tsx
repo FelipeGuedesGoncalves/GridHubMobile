@@ -3,42 +3,48 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { firebase } from '@/components/Firebase'; // Para acessar o Firebase
 import { ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Importando AsyncStorage
 
 export default function DetalhesMicrogrid() {
-    const [microgrid, setMicrogrid] = useState<any>(null);
-    const [userData, setUserData] = useState<any>(null);
-    const [locationData, setLocationData] = useState<any>(null);
+  const [microgrid, setMicrogrid] = useState<any>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [locationData, setLocationData] = useState<any>(null);
 
-    // ID da microgrid que você deseja buscar
-    const microgridId = "-OCFoYbKSx8KENJLUIuo";
+  useEffect(() => {
+    const fetchData = async () => {
+      const microgridId = await AsyncStorage.getItem('microgridSendoExibida'); // Recuperando o microgridId do AsyncStorage
 
-    useEffect(() => {
+      if (microgridId) {
         // Buscar os dados da microgrid pelo ID
         const microgridRef = firebase.database().ref('microgrids').child(microgridId);
         microgridRef.once('value', (snapshot) => {
-            const microgridData = snapshot.val();
-            setMicrogrid(microgridData);
+          const microgridData = snapshot.val();
+          setMicrogrid(microgridData);
 
-            // Quando pegar o userId da microgrid, buscar as informações do locatário
-            if (microgridData && microgridData.userId) {
-                const userRef = firebase.database().ref('usuario').child(microgridData.userId);
-                userRef.once('value', (userSnapshot) => {
-                    setUserData(userSnapshot.val());  // Garantir que estamos pegando os dados do locatário
-                });
-            }
+          // Quando pegar o userId da microgrid, buscar as informações do locatário
+          if (microgridData && microgridData.userId) {
+            const userRef = firebase.database().ref('usuario').child(microgridData.userId);
+            userRef.once('value', (userSnapshot) => {
+              setUserData(userSnapshot.val());  // Garantir que estamos pegando os dados do locatário
+            });
+          }
 
-            // Quando pegar o espacoId da microgrid, buscar as informações de localização
-            if (microgridData && microgridData.espacoId) {
-                const espacoRef = firebase.database().ref('espacos').child(microgridData.espacoId);
-                espacoRef.once('value', (espacoSnapshot) => {
-                    setLocationData(espacoSnapshot.val());
-                });
-            }
+          // Quando pegar o espacoId da microgrid, buscar as informações de localização
+          if (microgridData && microgridData.espacoId) {
+            const espacoRef = firebase.database().ref('espacos').child(microgridData.espacoId);
+            espacoRef.once('value', (espacoSnapshot) => {
+              setLocationData(espacoSnapshot.val());
+            });
+          }
         });
-    }, []); // Executa apenas uma vez quando o componente é montado
+      }
+    };
 
-    return (
-        <ScrollView>
+    fetchData();
+  }, []); // Executa apenas uma vez quando o componente é montado
+
+  return (
+    <ScrollView>
         <View style={styles.container}>
             <Text style={styles.title}>{microgrid?.nomeMicrogrid || 'N/A'}</Text>
 
@@ -70,9 +76,8 @@ export default function DetalhesMicrogrid() {
                 </View>
             </View>
         </View>
-        </ScrollView>
-
-    );
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -91,7 +96,7 @@ const styles = StyleSheet.create({
     details: {
         width: '80%',
         marginTop: 10,
-        marginBottom: 20,
+        marginBottom: 40,
     },
     infoblock: {},
     detailsTitle: {
@@ -112,3 +117,4 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
 });
+

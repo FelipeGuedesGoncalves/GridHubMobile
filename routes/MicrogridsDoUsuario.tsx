@@ -6,6 +6,7 @@ import { firebase } from '@/components/Firebase';
 import { globalstyles } from '@/styles/globalstyles';
 import CadastroMicrogrid from './CadastroMicrogrids';
 import DetalhesMicrogrid from './DetalhesMicrogrid'; // Importando a tela de detalhes
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Importando AsyncStorage
 
 const Stack = createStackNavigator(); // Criando o stack navigator
 
@@ -20,16 +21,28 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
     }
 
     const microgridRef = firebase.database().ref('microgrids');
+
     if (userId) {
+      // Escuta em tempo real para as mudanças na lista de microgrids
       microgridRef
         .orderByChild('userId')
         .equalTo(userId)
-        .on('value', (snapshot) => {
-          const microgridsData = [];
-          snapshot.forEach((childSnapshot) => {
-            microgridsData.push({ id: childSnapshot.key, ...childSnapshot.val() });
-          });
-          setMicrogrids(microgridsData);
+        .on('child_added', (snapshot) => {
+          const newMicrogrid = { id: snapshot.key, ...snapshot.val() };
+          setMicrogrids((prevMicrogrids) => [...prevMicrogrids, newMicrogrid]);
+        });
+
+      // Escuta em tempo real para alterações nas microgrids
+      microgridRef
+        .orderByChild('userId')
+        .equalTo(userId)
+        .on('child_changed', (snapshot) => {
+          const updatedMicrogrid = { id: snapshot.key, ...snapshot.val() };
+          setMicrogrids((prevMicrogrids) =>
+            prevMicrogrids.map((microgrid) =>
+              microgrid.id === updatedMicrogrid.id ? updatedMicrogrid : microgrid
+            )
+          );
         });
     }
 
@@ -37,6 +50,13 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
       microgridRef.off();
     };
   }, [userId]);
+
+  const handleVerMais = async (microgridId: string) => {
+    // Armazenar o microgridId no AsyncStorage
+    await AsyncStorage.setItem('microgridSendoExibida', microgridId);
+    // Redirecionar para a tela de detalhes
+    navigation.navigate('DetalhesMicrogrid');
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -49,7 +69,7 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
       <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
       <TouchableOpacity
         style={globalstyles.morebutton}
-        onPress={() => navigation.navigate('DetalhesMicrogrid', { microgridId: item.id })} // Navegação para detalhes
+        onPress={() => handleVerMais(item.id)} // Chamar a função para armazenar o id e redirecionar
       >
         <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
       </TouchableOpacity>
@@ -97,7 +117,7 @@ export default function MicrogridsDoUsuario() {
         }}
       />
       <Stack.Screen
-        name="DetalhesMicrogrid" // Adicionando a tela de detalhes da microgrid
+        name="DetalhesMicrogrid"
         component={DetalhesMicrogrid}
         options={{
           title: 'Detalhes da Microgrid',
