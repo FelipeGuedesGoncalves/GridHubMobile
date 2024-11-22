@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@/components/Firebase';
 import { appcolors } from '@/styles/appcolors';
+import { useNavigation } from '@react-navigation/native';
 
 export default function DetalhesMicrogrid() {
   const [microgrid, setMicrogrid] = useState<any>(null);
@@ -11,6 +12,7 @@ export default function DetalhesMicrogrid() {
   const [locationData, setLocationData] = useState<any>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isDifferentOwner, setIsDifferentOwner] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -56,6 +58,34 @@ export default function DetalhesMicrogrid() {
 
     fetchData();
   }, [currentUserId]);
+
+  const handleDeleteMicrogrid = async () => {
+    try {
+      const microgridId = await AsyncStorage.getItem('microgridSendoExibida');
+  
+      if (microgridId) {
+        const microgridRef = firebase.database().ref('microgrids').child(microgridId);
+        await microgridRef.remove();
+  
+        Alert.alert("Sucesso", "Microgrid deletada com sucesso!");
+        navigation.goBack(); // Volta para a tela anterior
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível deletar a microgrid.");
+    }
+  };
+  
+
+  const confirmDelete = () => {
+    Alert.alert(
+      'Confirmação',
+      'Tem certeza que deseja deletar esta microgrid? Essa ação não pode ser desfeita.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Deletar', style: 'destructive', onPress: handleDeleteMicrogrid },
+      ]
+    );
+  };
 
   const handleConfirm = () => {
     Alert.alert(
@@ -108,9 +138,13 @@ export default function DetalhesMicrogrid() {
             <Text style={styles.detailsContent}>{locationData?.endereco || 'Não disponível'}</Text>
           </View>
 
-          {isDifferentOwner && (
+          {isDifferentOwner ? (
             <View style={styles.buttonContainer}>
               <Button title="Torne-se um Investidor" onPress={handleSendEmail} color={appcolors.azulescuro} />
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <Button title="Deletar Microgrid" onPress={confirmDelete} color="red" />
             </View>
           )}
         </View>
@@ -120,7 +154,7 @@ export default function DetalhesMicrogrid() {
 }
 
 const styles = StyleSheet.create({
-  scrowView:{
+  scrowView: {
     backgroundColor: '#FFFFFF',
   },
   container: {
