@@ -9,6 +9,7 @@ export default function DetalhesEspaco() {
   const [espaco, setEspaco] = useState<any>(null);
   const [userData, setUserData] = useState<any>(null);
   const navigation = useNavigation();
+  const [isDifferentOwner, setIsDifferentOwner] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +27,9 @@ export default function DetalhesEspaco() {
           const userRef = firebase.database().ref('usuario').child(espacoData.userId);
           const userSnapshot = await userRef.once('value');
           setUserData(userSnapshot.val());
+          
+          // Verifica se o usuário atual é o proprietário do espaço
+          setIsDifferentOwner(espacoData.userId !== firebase.auth().currentUser?.uid);
         }
       } catch (error) {
         Alert.alert('Erro', 'Não foi possível carregar os dados do espaço.');
@@ -34,6 +38,25 @@ export default function DetalhesEspaco() {
 
     fetchData();
   }, []);
+
+  const handleConfirm = () => {
+    Alert.alert(
+      "Email enviado",
+      "Um email foi enviado para o dono deste espaço demonstrando interesse de contato. Fique atento à possível resposta.",
+      [{ text: "OK" }]
+    );
+  };
+
+  const handleSendEmail = () => {
+    Alert.alert(
+      "Confirmação",
+      "Deseja enviar um email automático para o dono deste espaço querendo alocar sua microgrid em seu local?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Confirmar", onPress: handleConfirm }
+      ]
+    );
+  };
 
   const handleDeleteEspaco = async () => {
     try {
@@ -104,7 +127,11 @@ export default function DetalhesEspaco() {
           </View>
         </View>
 
-        {espaco?.userId === firebase.auth().currentUser?.uid && (
+        {isDifferentOwner ? (
+          <View style={styles.buttonContainer}>
+            <Button title="Aloque sua Microgrid" onPress={handleSendEmail} color={appcolors.azulescuro} />
+          </View>
+        ) : (
           <View style={styles.buttonContainer}>
             <Button title="Deletar Espaço" onPress={handleDeleteEspaco} color="red" />
           </View>
