@@ -13,7 +13,6 @@ export default function DetalhesMicrogrid() {
   const [isDifferentOwner, setIsDifferentOwner] = useState(false);
 
   useEffect(() => {
-    // Obter o ID do usuário atualmente logado
     const fetchCurrentUser = async () => {
       const user = firebase.auth().currentUser;
       if (user) {
@@ -26,21 +25,18 @@ export default function DetalhesMicrogrid() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const microgridId = await AsyncStorage.getItem('microgridSendoExibida'); // Recuperar o ID da microgrid do AsyncStorage
+      const microgridId = await AsyncStorage.getItem('microgridSendoExibida');
 
       if (microgridId) {
-        // Buscar os dados da microgrid pelo ID
         const microgridRef = firebase.database().ref('microgrids').child(microgridId);
         microgridRef.once('value', (snapshot) => {
           const microgridData = snapshot.val();
           setMicrogrid(microgridData);
 
-          // Verificar se o userId da microgrid é diferente do usuário logado
           if (microgridData && microgridData.userId && currentUserId) {
             setIsDifferentOwner(microgridData.userId !== currentUserId);
           }
 
-          // Buscar informações do locatário
           if (microgridData && microgridData.userId) {
             const userRef = firebase.database().ref('usuario').child(microgridData.userId);
             userRef.once('value', (userSnapshot) => {
@@ -48,7 +44,6 @@ export default function DetalhesMicrogrid() {
             });
           }
 
-          // Buscar informações de localização
           if (microgridData && microgridData.espacoId) {
             const espacoRef = firebase.database().ref('espacos').child(microgridData.espacoId);
             espacoRef.once('value', (espacoSnapshot) => {
@@ -60,7 +55,7 @@ export default function DetalhesMicrogrid() {
     };
 
     fetchData();
-  }, [currentUserId]); // Adicionar `currentUserId` como dependência
+  }, [currentUserId]);
 
   const handleConfirm = () => {
     Alert.alert(

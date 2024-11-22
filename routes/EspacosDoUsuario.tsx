@@ -15,7 +15,6 @@ function EspacosDoUsuarioScreen({ navigation }: { navigation: any }) {
   const [espacos, setEspacos] = React.useState([]);
   const [userId, setUserId] = React.useState<string | null>(null);
 
-  // Capturar o userId do usuário logado
   React.useEffect(() => {
     const user = firebase.auth().currentUser;
     if (user) {
@@ -23,7 +22,6 @@ function EspacosDoUsuarioScreen({ navigation }: { navigation: any }) {
     }
   }, []);
 
-  // Buscar os espaços do usuário atual
   const fetchEspacosDoUsuario = React.useCallback(() => {
     if (!userId) return;
 
@@ -36,12 +34,11 @@ function EspacosDoUsuarioScreen({ navigation }: { navigation: any }) {
           id: key,
           ...data[key],
         }))
-        .filter((espaco) => espaco.userId === userId); // Filtrar apenas os espaços do usuário atual
+        .filter((espaco) => espaco.userId === userId);
 
       setEspacos(userEspacos);
     });
 
-    // Garantindo que nenhum listener fique ativo
     return () => espacoRef.off();
   }, [userId]);
 
@@ -52,9 +49,7 @@ function EspacosDoUsuarioScreen({ navigation }: { navigation: any }) {
   );
 
   const handleVerMais = async (espacoId: string) => {
-    // Armazenar o espacoId no AsyncStorage
     await AsyncStorage.setItem('espacoSendoExibido', espacoId);
-    // Redirecionar para a tela de detalhes
     navigation.navigate('DetalhesEspaco');
   };
 
@@ -67,7 +62,7 @@ function EspacosDoUsuarioScreen({ navigation }: { navigation: any }) {
       <Text style={styles.cardContent}>{item.areaTotal} m²</Text>
       <TouchableOpacity
         style={globalstyles.morebutton}
-        onPress={() => handleVerMais(item.id)} // Chamar a função para armazenar o id e redirecionar
+        onPress={() => handleVerMais(item.id)}
       >
         <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
       </TouchableOpacity>

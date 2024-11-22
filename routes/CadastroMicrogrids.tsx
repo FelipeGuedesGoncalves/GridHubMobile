@@ -53,7 +53,6 @@ export default function CadastroMicrogrid({ navigation }) {
             return;
         }
     
-        // Garantir que o userId seja sempre o do usuário atual
         const currentUser = auth.currentUser;
         if (!currentUser) {
             Toast.show({
@@ -66,7 +65,7 @@ export default function CadastroMicrogrid({ navigation }) {
         }
     
         const novoMicrogrid = {
-            userId: currentUser.uid, // Obter diretamente o userId do currentUser
+            userId: currentUser.uid,
             nomeMicrogrid,
             mediaRadiacao,
             topografia,

@@ -25,21 +25,17 @@ function EspacoScreen({ navigation }: { navigation: any }) {
       setEspacos(uniqueEspacos);
     });
 
-    // Garantindo que nenhum listener fique ativo
     return () => espacoRef.off();
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      // Atualiza os espaços toda vez que a tela ganha foco
       fetchEspacos();
     }, [fetchEspacos])
   );
 
   const handleVerMais = async (espacoId: string) => {
-    // Armazenar o espacoId no AsyncStorage
     await AsyncStorage.setItem('espacoSendoExibido', espacoId);
-    // Redirecionar para a tela de detalhes
     navigation.navigate('DetalhesEspaco');
   };
 

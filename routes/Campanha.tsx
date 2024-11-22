@@ -25,21 +25,17 @@ function CampanhaScreen({ navigation }: { navigation: any }) {
       setMicrogrids(uniqueMicrogrids);
     });
 
-    // Garantindo que nenhum listener fique ativo
     return () => microgridRef.off();
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      // Atualiza os microgrids toda vez que a tela ganha foco
       fetchMicrogrids();
     }, [fetchMicrogrids])
   );
 
   const handleVerMais = async (microgridId: string) => {
-    // Armazenar o microgridId no AsyncStorage
     await AsyncStorage.setItem('microgridSendoExibida', microgridId);
-    // Redirecionar para a tela de detalhes
     navigation.navigate('DetalhesMicrogrid');
   };
 

@@ -1,9 +1,9 @@
 import { appcolors } from '@/styles/appcolors';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { firebase } from '@/components/Firebase'; // Para acessar o Firebase
+import { firebase } from '@/components/Firebase';
 import { ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Importando AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DetalhesEspaco() {
   const [espaco, setespaco] = useState<any>(null);
@@ -12,24 +12,21 @@ export default function DetalhesEspaco() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const espacoId = await AsyncStorage.getItem('espacoSendoExibido'); // Recuperando o espacoId do AsyncStorage
+      const espacoId = await AsyncStorage.getItem('espacoSendoExibido');
 
       if (espacoId) {
-        // Buscar os dados da espaco pelo ID
         const espacoRef = firebase.database().ref('espacos').child(espacoId);
         espacoRef.once('value', (snapshot) => {
           const espacoData = snapshot.val();
           setespaco(espacoData);
 
-          // Quando pegar o userId da espaco, buscar as informações do locatário
           if (espacoData && espacoData.userId) {
             const userRef = firebase.database().ref('usuario').child(espacoData.userId);
             userRef.once('value', (userSnapshot) => {
-              setUserData(userSnapshot.val());  // Garantir que estamos pegando os dados do locatário
+              setUserData(userSnapshot.val());
             });
           }
 
-          // Quando pegar o espacoId da espaco, buscar as informações de localização
           if (espacoData && espacoData.espacoId) {
             const espacoRef = firebase.database().ref('espacos').child(espacoData.espacoId);
             espacoRef.once('value', (espacoSnapshot) => {
@@ -41,7 +38,7 @@ export default function DetalhesEspaco() {
     };
 
     fetchData();
-  }, []); // Executa apenas uma vez quando o componente é montado
+  }, []);
 
   return (
     <ScrollView style={styles.scrowView}>

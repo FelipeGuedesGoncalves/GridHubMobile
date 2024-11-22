@@ -6,10 +6,10 @@ import { appcolors } from '@/styles/appcolors';
 import { firebase } from '@/components/Firebase';
 import { globalstyles } from '@/styles/globalstyles';
 import CadastroMicrogrid from './CadastroMicrogrids';
-import DetalhesMicrogrid from './DetalhesMicrogrid'; // Importando a tela de detalhes
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Importando AsyncStorage
+import DetalhesMicrogrid from './DetalhesMicrogrid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Stack = createStackNavigator(); // Criando o stack navigator
+const Stack = createStackNavigator();
 
 function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
   const [microgrids, setMicrogrids] = React.useState([]);
@@ -28,7 +28,6 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
 
       const microgridRef = firebase.database().ref('microgrids');
 
-      // Carregar os dados ao entrar na tela
       const fetchMicrogrids = async () => {
         const snapshot = await microgridRef
           .orderByChild('userId')
@@ -43,15 +42,12 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
 
       fetchMicrogrids();
 
-      // Não há necessidade de remover listeners porque estamos usando `.once`
       return () => {};
     }, [userId])
   );
 
   const handleVerMais = async (microgridId: string) => {
-    // Armazenar o microgridId no AsyncStorage
     await AsyncStorage.setItem('microgridSendoExibida', microgridId);
-    // Redirecionar para a tela de detalhes
     navigation.navigate('DetalhesMicrogrid');
   };
 
@@ -66,7 +62,7 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
       <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
       <TouchableOpacity
         style={globalstyles.morebutton}
-        onPress={() => handleVerMais(item.id)} // Chamar a função para armazenar o id e redirecionar
+        onPress={() => handleVerMais(item.id)}
       >
         <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
       </TouchableOpacity>
