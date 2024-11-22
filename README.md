@@ -1,4 +1,4 @@
-![Imagem de Capa](assets/images/GridHubWhiteTextlogo.png)
+![Imagem de Capa](assets/images/GridHubTextLogoWhite.png)
 
 ---
 ## Sumário
