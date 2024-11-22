@@ -16,7 +16,6 @@ export default function CadastroMicrogrid({ navigation }) {
     const [areaTotal, setAreaTotal] = useState('');
     const [velocidadeVento, setVelocidadeVento] = useState('');
     const [fontesEnergia, setFontesEnergia] = useState('');
-    const [apiRelatorio, setApiRelatorio] = useState('');
     const [metaFinanciamento, setMetaFinanciamento] = useState('');
     const [espacos, setEspacos] = useState([]);
     const [espacoSelecionado, setEspacoSelecionado] = useState('');
@@ -45,7 +44,7 @@ export default function CadastroMicrogrid({ navigation }) {
     }, []);
 
     async function saveMicrogrid() {
-        if (!nomeMicrogrid || !mediaRadiacao || !topografia || !areaTotal || !velocidadeVento || !fontesEnergia || !apiRelatorio || !metaFinanciamento || !espacoSelecionado) {
+        if (!nomeMicrogrid || !mediaRadiacao || !topografia || !areaTotal || !velocidadeVento || !fontesEnergia || !metaFinanciamento || !espacoSelecionado) {
             Toast.show({
                 type: 'error',
                 text1: 'Erro',
@@ -74,7 +73,6 @@ export default function CadastroMicrogrid({ navigation }) {
             areaTotal,
             velocidadeVento,
             fontesEnergia,
-            apiRelatorio,
             metaFinanciamento,
             espacoId: espacoSelecionado,
         };
@@ -152,14 +150,6 @@ export default function CadastroMicrogrid({ navigation }) {
                         style={styles.input}
                         placeholder="-"
                         onChangeText={(text) => setFontesEnergia(text)}
-                        autoCapitalize="none"
-                    />
-                    <Text style={styles.profileTitle}>API de exibição de relatórios</Text>
-                    <Text style={styles.profileSubtitle}>Indique o link da API de exibição dos dados do seu equipamento, é através dele que nossa aplicação exibirá gráficos com informações importantes</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="-"
-                        onChangeText={(text) => setApiRelatorio(text)}
                         autoCapitalize="none"
                     />
                     <Text style={styles.profileTitle}>Meta de financiamento</Text>

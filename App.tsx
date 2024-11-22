@@ -60,6 +60,19 @@ function MyTabs() {
           ),
         }}
       />
+            <Tab.Screen
+        name="MicrogridsDoUsuario"
+        component={MicrogridsDoUsuario}
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: () => (
+            <Image
+              source={require('@/assets/images/Microgrids.png')}
+              style={styles.tabIcon}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="EspacosAlugaveis"
         component={EspacosAlugaveis}
@@ -81,19 +94,6 @@ function MyTabs() {
           tabBarIcon: () => (
             <Image
               source={require('@/assets/images/EspacosDoUsuario.png')}
-              style={styles.tabIcon}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="MicrogridsDoUsuario"
-        component={MicrogridsDoUsuario}
-        options={{
-          tabBarLabel: () => null,
-          tabBarIcon: () => (
-            <Image
-              source={require('@/assets/images/Microgrids.png')}
               style={styles.tabIcon}
             />
           ),

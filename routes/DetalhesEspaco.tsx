@@ -44,7 +44,7 @@ export default function DetalhesEspaco() {
   }, []); // Executa apenas uma vez quando o componente é montado
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrowView}>
         <View style={styles.container}>
             <Text style={styles.title}>{espaco?.nomeEspaco || 'N/A'}</Text>
 
@@ -72,6 +72,9 @@ export default function DetalhesEspaco() {
 }
 
 const styles = StyleSheet.create({
+    scrowView:{
+        backgroundColor: '#FFFFFF',
+      },
     container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
