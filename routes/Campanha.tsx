@@ -1,65 +1,72 @@
-import { firebase } from '@/components/Firebase';
+import React from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { appcolors } from '@/styles/appcolors';
+import { firebase } from '@/components/Firebase';
 import { globalstyles } from '@/styles/globalstyles';
-import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
- 
-export default function Campanha() {
-  const [microgrids, setMicrogrids] = useState([]);
-  const [espacos, setEspacos] = useState({});
- 
-  useEffect(() => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DetalhesMicrogrid from './DetalhesMicrogrid';
+
+const Stack = createStackNavigator();
+
+function CampanhaScreen({ navigation }: { navigation: any }) {
+  const [microgrids, setMicrogrids] = React.useState([]);
+
+  const fetchMicrogrids = React.useCallback(() => {
     const microgridRef = firebase.database().ref('microgrids');
-    const espacoRef = firebase.database().ref('espacos');
- 
-    microgridRef.on('value', (microgridSnapshot) => {
-      const microgridsData = [];
-      microgridSnapshot.forEach((childSnapshot) => {
-        microgridsData.push({ id: childSnapshot.key, ...childSnapshot.val() });
-      });
-      setMicrogrids(microgridsData);
+
+    microgridRef.once('value', (snapshot) => {
+      const data = snapshot.val() || {};
+      const uniqueMicrogrids = Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+      }));
+      setMicrogrids(uniqueMicrogrids);
     });
- 
-    // Escutando os espaços em tempo real
-    espacoRef.on('value', (espacoSnapshot) => {
-      const espacosData = {};
-      espacoSnapshot.forEach((childSnapshot) => {
-        espacosData[childSnapshot.key] = childSnapshot.val().nomeEspaco;
-      });
-      setEspacos(espacosData);
-    });
- 
- 
-    return () => {
-      microgridRef.off();
-      espacoRef.off();
-    };
+
+    // Garantindo que nenhum listener fique ativo
+    return () => microgridRef.off();
   }, []);
- 
-  const renderItem = ({ item }) => {
-    return (
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>{item.nomeMicrogrid}</Text>
-        <Text style={styles.cardSubtitle}>Produz energia pelas fontes:</Text>
-        <Text style={styles.cardContent}>{item.fontesEnergia}</Text>
-        <Text style={styles.cardSubtitle}>Área Total:</Text>
-        <Text style={styles.cardContent}>{item.areaTotal} m²</Text>
-        <Text style={styles.cardSubtitle}>Meta de financiamento:</Text>
-        <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
-        <TouchableOpacity style={globalstyles.morebutton}>
-          <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
-        </TouchableOpacity>
-      </View>
-    );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Atualiza os microgrids toda vez que a tela ganha foco
+      fetchMicrogrids();
+    }, [fetchMicrogrids])
+  );
+
+  const handleVerMais = async (microgridId: string) => {
+    // Armazenar o microgridId no AsyncStorage
+    await AsyncStorage.setItem('microgridSendoExibida', microgridId);
+    // Redirecionar para a tela de detalhes
+    navigation.navigate('DetalhesMicrogrid');
   };
- 
+
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>{item.nomeMicrogrid}</Text>
+      <Text style={styles.cardSubtitle}>Produz energia pelas fontes:</Text>
+      <Text style={styles.cardContent}>{item.fontesEnergia}</Text>
+      <Text style={styles.cardSubtitle}>Área Total:</Text>
+      <Text style={styles.cardContent}>{item.areaTotal} m²</Text>
+      <Text style={styles.cardSubtitle}>Meta de financiamento:</Text>
+      <Text style={styles.cardContent}>R$ {item.metaFinanciamento}</Text>
+      <TouchableOpacity
+        style={globalstyles.morebutton}
+        onPress={() => handleVerMais(item.id)}
+      >
+        <Text style={globalstyles.morebuttontext}>Ver Mais</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Campanha de Investimento</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Campanha de Investimentos</Text>
       <Text style={styles.subtitle}>
         Descubra oportunidades incríveis na GridHub e torne-se parte da transformação energética.
-        Navegue pelos microgrids cadastrados por usuários como você e encontre projetos que chamem
+        Navegue pelas microgrids cadastrados por usuários como você e encontre projetos que chamem
         sua atenção.
       </Text>
       <FlatList
@@ -67,21 +74,40 @@ export default function Campanha() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatList}
-        initialNumToRender={10}
-        onEndReachedThreshold={0.5}
       />
-    </SafeAreaView>
+    </View>
   );
 }
- 
+
+export default function Campanha() {
+  return (
+    <Stack.Navigator initialRouteName="CampanhaScreen">
+      <Stack.Screen
+        name="CampanhaScreen"
+        component={CampanhaScreen}
+        options={{
+          title: 'Campanha',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DetalhesMicrogrid"
+        component={DetalhesMicrogrid}
+        options={{
+          title: 'Detalhes da Microgrid',
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: '#ffffff',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     paddingTop: 20,
-    padding: 0,
-    paddingBottom: 80,
   },
   title: {
     fontSize: 24,
@@ -106,7 +132,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 10,
     borderRadius: 30,
     padding: 20,
-    margin: 20
+    margin: 20,
   },
   cardTitle: {
     fontSize: 18,
@@ -130,4 +156,3 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
 });
- 

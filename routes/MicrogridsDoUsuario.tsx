@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { appcolors } from '@/styles/appcolors';
 import { firebase } from '@/components/Firebase';
 import { globalstyles } from '@/styles/globalstyles';
@@ -19,37 +20,33 @@ function MicrogridsDoUsuarioScreen({ navigation }: { navigation: any }) {
     if (user) {
       setUserId(user.uid);
     }
+  }, []);
 
-    const microgridRef = firebase.database().ref('microgrids');
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!userId) return;
 
-    if (userId) {
-      // Escuta em tempo real para as mudanças na lista de microgrids
-      microgridRef
-        .orderByChild('userId')
-        .equalTo(userId)
-        .on('child_added', (snapshot) => {
-          const newMicrogrid = { id: snapshot.key, ...snapshot.val() };
-          setMicrogrids((prevMicrogrids) => [...prevMicrogrids, newMicrogrid]);
+      const microgridRef = firebase.database().ref('microgrids');
+
+      // Carregar os dados ao entrar na tela
+      const fetchMicrogrids = async () => {
+        const snapshot = await microgridRef
+          .orderByChild('userId')
+          .equalTo(userId)
+          .once('value');
+        const fetchedMicrogrids = [];
+        snapshot.forEach((child) => {
+          fetchedMicrogrids.push({ id: child.key, ...child.val() });
         });
+        setMicrogrids(fetchedMicrogrids);
+      };
 
-      // Escuta em tempo real para alterações nas microgrids
-      microgridRef
-        .orderByChild('userId')
-        .equalTo(userId)
-        .on('child_changed', (snapshot) => {
-          const updatedMicrogrid = { id: snapshot.key, ...snapshot.val() };
-          setMicrogrids((prevMicrogrids) =>
-            prevMicrogrids.map((microgrid) =>
-              microgrid.id === updatedMicrogrid.id ? updatedMicrogrid : microgrid
-            )
-          );
-        });
-    }
+      fetchMicrogrids();
 
-    return () => {
-      microgridRef.off();
-    };
-  }, [userId]);
+      // Não há necessidade de remover listeners porque estamos usando `.once`
+      return () => {};
+    }, [userId])
+  );
 
   const handleVerMais = async (microgridId: string) => {
     // Armazenar o microgridId no AsyncStorage
@@ -127,7 +124,6 @@ export default function MicrogridsDoUsuario() {
     </Stack.Navigator>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
