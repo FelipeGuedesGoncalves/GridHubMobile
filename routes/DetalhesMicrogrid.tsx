@@ -68,7 +68,7 @@ export default function DetalhesMicrogrid() {
         await microgridRef.remove();
   
         Alert.alert("Sucesso", "Microgrid deletada com sucesso!");
-        navigation.goBack(); // Volta para a tela anterior
+        navigation.goBack();
       }
     } catch (error) {
       Alert.alert("Erro", "Não foi possível deletar a microgrid.");

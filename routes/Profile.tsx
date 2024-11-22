@@ -62,13 +62,10 @@ export default function Profile({ navigation }) {
                         try {
                             const user = auth.currentUser;
                             if (user) {
-                                // Chamada para deletar dados relacionados
                                 await deleteUserRelatedData(user.uid);
     
-                                // Remover usuário do banco
                                 await database.ref(`usuario/${user.uid}`).remove();
     
-                                // Excluir conta de autenticação
                                 await user.delete();
     
                                 Toast.show({
