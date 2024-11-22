@@ -5,7 +5,6 @@
 - [Integrantes](#integrantes)
 - [Descrição do Projeto](#descrição-do-projeto)
 - [Como funciona](#como-funciona)
-- [Funcionalidades](#funcionalidades)
 - [Comandos para executar o projeto](#comandos-para-executar-o-projeto)
 
 ---
