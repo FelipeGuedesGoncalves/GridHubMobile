@@ -61,7 +61,7 @@ function EspacoScreen({ navigation }: { navigation: any }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Espaços Disponíveis</Text>
+      <Text style={styles.title}>Espaços Alugáveis</Text>
       <Text style={styles.subtitle}>
         Encontre espaços ideais para geração de energia renovável. Explore e veja detalhes dos
         espaços cadastrados.
