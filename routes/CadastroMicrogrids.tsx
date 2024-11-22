@@ -112,7 +112,7 @@ export default function CadastroMicrogrid({ navigation }) {
                         onChangeText={(text) => setNomeMicrogrid(text)}
                         autoCapitalize="none"
                     />
-                    <Text style={styles.profileLabel}>Média Anual de Radiação Solar Necessária</Text>
+                    <Text style={styles.profileLabel}>Média Anual de Radiação Solar Necessária (kWh/m²)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
@@ -127,7 +127,7 @@ export default function CadastroMicrogrid({ navigation }) {
                         onChangeText={(text) => setTopografia(text)}
                         autoCapitalize="none"
                     />
-                    <Text style={styles.profileLabel}>Área Total Necessária</Text>
+                    <Text style={styles.profileLabel}>Área Total Necessária (m²)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
@@ -135,7 +135,7 @@ export default function CadastroMicrogrid({ navigation }) {
                         onChangeText={(text) => setAreaTotal(text)}
                         autoCapitalize="none"
                     />
-                    <Text style={styles.profileLabel}>Velocidade Média do Vento Necessária</Text>
+                    <Text style={styles.profileLabel}>Velocidade Média do Vento Necessária (m/s)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"

@@ -184,7 +184,7 @@ export default function CadastroEspaco({ navigation }) {
                         placeholder="-"
                         onChangeText={(text) => setOrientacaoSolar(text)}
                     />
-                    <Text style={styles.profileLabel}>Média Anual de Radiação Solar</Text>
+                    <Text style={styles.profileLabel}>Média Anual de Radiação Solar (kWh/m²)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
@@ -197,7 +197,7 @@ export default function CadastroEspaco({ navigation }) {
                         placeholder="-"
                         onChangeText={(text) => setTopografia(text)}
                     />
-                    <Text style={styles.profileLabel}>Área Total</Text>
+                    <Text style={styles.profileLabel}>Área Total (m²)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
@@ -210,7 +210,7 @@ export default function CadastroEspaco({ navigation }) {
                         placeholder="-"
                         onChangeText={(text) => setDirecaoVento(text)}
                     />
-                    <Text style={styles.profileLabel}>Velocidade Média do Vento na Região</Text>
+                    <Text style={styles.profileLabel}>Velocidade Média do Vento na Região (m/s)</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="-"
