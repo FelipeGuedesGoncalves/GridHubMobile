@@ -62,10 +62,15 @@ export default function Profile({ navigation }) {
                         try {
                             const user = auth.currentUser;
                             if (user) {
+                                // Chamada para deletar dados relacionados
+                                await deleteUserRelatedData(user.uid);
+    
+                                // Remover usuário do banco
                                 await database.ref(`usuario/${user.uid}`).remove();
-                                
+    
+                                // Excluir conta de autenticação
                                 await user.delete();
-
+    
                                 Toast.show({
                                     type: 'success',
                                     text1: 'Conta excluída com sucesso!',
@@ -85,6 +90,31 @@ export default function Profile({ navigation }) {
             ]
         );
     };
+    
+
+    const deleteUserRelatedData = async (userId) => {
+        const microgridsRef = database.ref('microgrids');
+        const espacosRef = database.ref('espacos');
+    
+        // Remover microgrids associadas ao usuário
+        await microgridsRef.once('value', (snapshot) => {
+            snapshot.forEach((child) => {
+                if (child.val().userId === userId) {
+                    microgridsRef.child(child.key).remove();
+                }
+            });
+        });
+    
+        // Remover espacos associados ao usuário
+        await espacosRef.once('value', (snapshot) => {
+            snapshot.forEach((child) => {
+                if (child.val().userId === userId) {
+                    espacosRef.child(child.key).remove();
+                }
+            });
+        });
+    };
+    
 
     const handleEditProfile = () => {
         setIsEditing(true);
