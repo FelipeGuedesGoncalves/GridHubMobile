@@ -27,6 +27,7 @@
         <data android:scheme="myapp"/>
         <data android:scheme="com.fiap.GridHubmobileandroid"/>
         <data android:scheme="exp+GridHubmobile"/>
+        <data android:scheme="exp+gridhubmobile"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
