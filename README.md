@@ -10,7 +10,7 @@
 
 ---
 
-# GridHub - Análise de Produtividade para Aplicações Corporativas
+# GridHub - Transformando espaços em soluções para um futuro melhor
 
 ## Integrantes:
 #### Breno Lemes Santiago RM: 552270
@@ -20,29 +20,21 @@
 #### Vitória Maria de Camargo RM: 552344
 
 ## Descrição do Projeto
-O **GridHub** é uma ferramenta de análise de produtividade desenvolvida para monitorar o uso dos softwares corporativos da Plusoft, proporcionando insights detalhados sobre a eficiência e o engajamento dos funcionários com as funcionalidades disponíveis. A solução visa otimizar o desempenho das equipes, gerando relatórios baseados em interações reais, como cliques, rolagens e períodos de inatividade.
+O **GridHub** é uma plataforma desenvolvida para intermediar e viabilizar a implementação de microgrids, promovendo o uso de energias renováveis e contribuindo para a sustentabilidade ambiental. Ela conecta proprietários de microgrids, locadores de espaços adequados para instalação e investidores interessados em financiar esses projetos, criando uma rede colaborativa em prol da energia limpa.
 
-A aplicação oferece uma visão clara sobre como os funcionários estão aproveitando as ferramentas disponibilizadas, ajudando empresas a melhorar seus processos internos e utilizar ao máximo os recursos adquiridos.
+As microgrids são sistemas locais de geração de energia sustentável que atendem áreas específicas, garantindo flexibilidade e confiabilidade no fornecimento de energia. Com o GridHub, essas soluções tornam-se acessíveis e escaláveis, facilitando sua expansão e popularização.
 
-## Como funciona
-A versão mobile do GridHub funciona como um BaaS (Backend-as-a-Service), utilizando o Firebase Realtime Database como banco de dados. Todos os processos de gerenciamento de usuários — como login, cadastro, edição e exclusão — são realizados com o Firebase Authentication, garantindo uma experiência segura e integrada.
+## Como Funciona
 
-Para aprimorar a experiência dos usuários, a aplicação usa o Async Storage para identificar quem já acessou o app. Caso seja a primeira vez que o usuário esteja acessando o aplicativo no dispositivo, uma mensagem é exibida, sugerindo que ele assista a um tutorial de uso. Esse tutorial é apresentado por meio de um vídeo hospedado no YouTube, integrado ao aplicativo com o React Native YouTube Iframe.
+O GridHub organiza suas funcionalidades em cinco áreas principais:
 
-A navegação do aplicativo é organizada com o uso de rotas, configuradas no arquivo App.tsx. A aplicação utiliza a biblioteca Material Top Tab Navigator em conjunto com o Stack Navigator para gerenciar as rotas, oferecendo uma barra de navegação com ícones que permitem fácil acesso às principais seções: Dashboard, Relatório, Tutorial e Perfil.
-
-Dentro do GridHub, o usuário pode visualizar dados por meio de dois formatos: o Dashboard e o Relatório. O Dashboard exibe gráficos diversos que facilitam a análise visual, enquanto o Relatório fornece uma visão detalhada e textual das informações. Ambos os módulos oferecem filtros de período para selecionar "Hoje," "Esta Semana" ou "Este Mês," permitindo ao usuário um acompanhamento flexível e adaptável às suas necessidades.
+1. **Espaços Alugáveis**: Aqui são exibidos os espaços cadastrado por todos os os usuários da plataforma.
+2. **Meus Espaços**: Locadores podem visualizar os espaços que cadastrou ou adicionar um novo, podendo cadastrar espaços adequados para instalação de microgrids, detalhando suas características. Interessados podem negociar diretamente e vincular suas microgrids a esses espaços.
+3. **Campanha de Investimento**: Microgrids cadastradas podem receber apoio financeiro de investidores interessados, que enviam propostas diretamente aos proprietários.
+4. **Minhas Microgrids**: Locatários podem visualizar as microgrids que cadastrou ou adicionar uma nova, detalhando suas características.
+5. **Perfil do Usuário**: Centraliza dados e configurações pessoais para facilitar a interação na plataforma.
 
 A aplicação é desenvolvida com Expo, uma plataforma que facilita a construção e execução do aplicativo com o React Native.
-
-## Funcionalidades
-- **Monitoramento de processos**: Análise de interações dos usuários em tempo real
-- **Integração com API**: Reconhecimento e validação de CNPJ
-- **Cadastro de Empresas (usuários)**: Registro de usuários na plataforma GridHub. Idealmente, o usuário será um gestor, de uma equipe que trabalha com sistemas ERP em uma empresa.
-- **Login e Autenticação**: Acesso seguro através de e-mail e senha.
-- **Dashboard Geral da Equipe**: Visão geral da performance da equipe, funções mais utilizadas, tempo de inatividade, e insights sobre atividades e comportamento.
-- **Relatórios textuais da Equipe**: Texto detalhado com análises do time, destacando pontos críticos e recomendações para melhorias.
-- **Guia de Como Usar**: Vídeo tutorial com um passo a passo das principais funcionalidades da plataforma.
 
 
 ## Comandos para executar o projeto
