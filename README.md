@@ -6,6 +6,7 @@
 - [Descrição do Projeto](#descrição-do-projeto)
 - [Como funciona](#como-funciona)
 - [Comandos para executar o projeto](#comandos-para-executar-o-projeto)
+- [Link do vídeo do projeto](link-do-vídeo-do-projeto)
 
 ---
 
@@ -17,6 +18,9 @@
 #### Luiz Fellipe Soares de Sousa Lucena RM: 551365
 #### Nina Rebello Francisco RM: 99509
 #### Vitória Maria de Camargo RM: 552344
+
+## Link do vídeo do projeto
+https://youtu.be/n44EFSy8eA0 
 
 ## Descrição do Projeto
 O **GridHub** é uma plataforma desenvolvida para intermediar e viabilizar a implementação de microgrids, promovendo o uso de energias renováveis e contribuindo para a sustentabilidade ambiental. Ela conecta proprietários de microgrids, locadores de espaços adequados para instalação e investidores interessados em financiar esses projetos, criando uma rede colaborativa em prol da energia limpa.
